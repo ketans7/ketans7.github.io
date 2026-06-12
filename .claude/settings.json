@@ -39,7 +39,10 @@
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1440,1000 --screenshot=\"/tmp/shot_rb.png\" --virtual-time-budget=12000 \"http://localhost:8901/demo/riderbro/index.html\")",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,3600 --screenshot=\"/tmp/shot_resume2.png\" --virtual-time-budget=5000 \"http://localhost:8901/\")",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1440,1000 --screenshot=\"/tmp/shot_br2.png\" --virtual-time-budget=6000 \"http://localhost:8901/demo/business-radar/index.html\")",
-      "Bash(pkill -f \"uvicorn dashboard.server\")"
+      "Bash(pkill -f \"uvicorn dashboard.server\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --no-pdf-header-footer --print-to-pdf=\"/Users/ketan/Documents/GitHub/ketans7.github.io/file/Ketan-Sharma-CV.pdf\" --virtual-time-budget=5000 \"http://localhost:8901/\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} new pdf\\\\n\" http://localhost:8901/file/Ketan-Sharma-CV.pdf)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,2400 --screenshot=\"/tmp/shot_resume3.png\" --virtual-time-budget=5000 \"http://localhost:8901/\")"
     ],
     "additionalDirectories": [
       "/private/tmp/business-radar/core",

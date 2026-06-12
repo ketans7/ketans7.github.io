@@ -263,11 +263,14 @@
       .entry-head { flex-direction: column; gap: 2px; }
     }
 
+    .print-only { display: none; }
+
     /* ============ Print (clean one-page CV) ============ */
     @media print {
       body { background: #ffffff; font-size: 12px; }
       .page { max-width: 100%; padding: 0; }
-      .section-nav, .btn-row, footer { display: none; }
+      .section-nav, .btn-row, footer, .no-print { display: none; }
+      .print-only { display: block; font-size: 11.5px; color: #374151; margin: 6px 0 0; }
       section, .resume-header, .project-card {
         border: none;
         border-radius: 0;
@@ -296,7 +299,7 @@
           <span>+44 7818 980305</span>
           <span><a href="https://www.linkedin.com/in/ketan-sharma-b7556a1b2/" target="_blank" rel="noopener">LinkedIn</a></span>
           <span><a href="https://github.com/ketans7" target="_blank" rel="noopener">GitHub</a></span>
-          <span><a href="file/CV-Main.pdf" target="_blank">Download CV (PDF)</a></span>
+          <span class="no-print"><a href="file/Ketan-Sharma-CV.pdf" download="Ketan-Sharma-CV.pdf">Download CV (PDF)</a></span>
         </div>
       </div>
     </header>
@@ -304,8 +307,8 @@
     <nav class="section-nav" aria-label="Sections">
       <a href="#summary">Summary</a>
       <a href="#skills">Skills</a>
-      <a href="#experience">Experience</a>
       <a href="#project">Featured Projects</a>
+      <a href="#experience">Experience</a>
       <a href="#education">Education</a>
       <a href="#languages">Languages</a>
     </nav>
@@ -340,23 +343,6 @@
       </dl>
     </section>
 
-    <section id="experience">
-      <h2>Professional Experience</h2>
-      <div class="entry">
-        <div class="entry-head">
-          <h3>Crowd Technical Director — DNEG</h3>
-          <span class="entry-date">Jan 2022 – Jun 2023</span>
-        </div>
-        <p class="entry-sub">Mumbai, India · Film &amp; television VFX</p>
-        <ul>
-          <li>Developed and implemented large-scale crowd simulations for major film and television productions.</li>
-          <li>Applied algorithmic problem-solving in Python and C++ to optimise crowd behaviours and improve the efficiency of complex, large-scale scenes.</li>
-          <li>Collaborated with VFX teams to integrate simulations into shots, balancing technical accuracy with artistic direction.</li>
-          <li>Managed technical workflows and asset structures across large projects, keeping pipelines reliable and accessible for the whole team.</li>
-        </ul>
-      </div>
-    </section>
-
     <section id="project">
       <h2>Featured Projects</h2>
 
@@ -377,6 +363,7 @@
           <li><strong>AI-personalised outreach at zero API cost:</strong> locally hosted LLMs analyse each business's website (with Selenium screenshot capture) and generate tailored cold emails, then automate the full lifecycle — SMTP sending with safety limits, day-3/7/12 follow-ups, and IMAP reply tracking with classification.</li>
           <li><strong>Lead-management dashboard:</strong> Flask web app with a pipeline view, AI draft review, reply inbox, interactive lead map, and analytics on an SQLite persistence layer — production-minded with dry-run mode and a rate-limited send queue.</li>
         </ul>
+        <p class="print-only">Code: github.com/ketans7/business-radar &nbsp;·&nbsp; Live demo: ketans7.github.io/demo/business-radar/</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="demo/business-radar/index.html">View Static Demo</a>
           <a class="btn btn-outline" href="https://github.com/ketans7/business-radar" target="_blank" rel="noopener">View Code on GitHub</a>
@@ -400,10 +387,28 @@
           <li><strong>Real-time decision engine:</strong> computes the actual cycling route via Mapbox through every stop, prices in per-stop and peak-hour friction, and returns a verdict with effective £/hour and a per-leg time breakdown in seconds.</li>
           <li><strong>Self-improving data flywheel:</strong> every order, route, outcome, and post-delivery survey is logged to SQLite, powering positioning suggestions from OpenStreetMap venue data and a React analytics dashboard with live feed, spatial heatmaps, and hunting-ground maps.</li>
         </ul>
+        <p class="print-only">Code: github.com/ketans7/RiderBro &nbsp;·&nbsp; Live demo: ketans7.github.io/demo/riderbro/</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="demo/riderbro/index.html">View Static Demo</a>
           <a class="btn btn-outline" href="https://github.com/ketans7/RiderBro" target="_blank" rel="noopener">View Code on GitHub</a>
         </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <h2>Professional Experience</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <h3>Crowd Technical Director — DNEG</h3>
+          <span class="entry-date">Jan 2022 – Jun 2023</span>
+        </div>
+        <p class="entry-sub">Mumbai, India · Film &amp; television VFX</p>
+        <ul>
+          <li>Developed and implemented large-scale crowd simulations for major film and television productions.</li>
+          <li>Applied algorithmic problem-solving in Python and C++ to optimise crowd behaviours and improve the efficiency of complex, large-scale scenes.</li>
+          <li>Collaborated with VFX teams to integrate simulations into shots, balancing technical accuracy with artistic direction.</li>
+          <li>Managed technical workflows and asset structures across large projects, keeping pipelines reliable and accessible for the whole team.</li>
+        </ul>
       </div>
     </section>
 
