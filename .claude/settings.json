@@ -22,12 +22,31 @@
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,3400 --screenshot=\"/tmp/shot_resume_full.png\" --virtual-time-budget=5000 \"http://localhost:8901/\")",
       "Bash(pkill -f \"start_dashboard.py\")",
       "Bash(pkill -f \"http.server 8901\")",
-      "Bash(git -C /Users/ketan/Documents/GitHub/ketans7.github.io status --short)"
+      "Bash(git -C /Users/ketan/Documents/GitHub/ketans7.github.io status --short)",
+      "Bash(.venv/bin/python -c \"import fastapi, sqlmodel, uvicorn; print\\('deps ok'\\)\")",
+      "Bash(.venv/bin/python -m uvicorn dashboard.server:app --port 8810)",
+      "Bash(curl -s -o /tmp/riderbro-index.html -w \"/ -> %{http_code} \\($\\(echo\\)\\)\" http://localhost:8810/)",
+      "Bash(curl -s -o /tmp/riderbro-hunting.json -w \"hunting %{http_code}\\\\n\" \"http://localhost:8810/api/hunting\")",
+      "Bash(curl -s -o /tmp/riderbro-data.json -w \"data %{http_code}\\\\n\" http://localhost:8810/api/data)",
+      "Bash(mkdir -p /Users/ketan/Documents/GitHub/ketans7.github.io/demo/riderbro/api /Users/ketan/Documents/GitHub/ketans7.github.io/demo/riderbro/static)",
+      "Bash(cp /tmp/RiderBro/dashboard/static/*.jsx /tmp/RiderBro/dashboard/static/styles.css /Users/ketan/Documents/GitHub/ketans7.github.io/demo/riderbro/static/)",
+      "Bash(cp /tmp/riderbro-data.json /Users/ketan/Documents/GitHub/ketans7.github.io/demo/riderbro/api/data.json)",
+      "Bash(cp /tmp/riderbro-hunting.json /Users/ketan/Documents/GitHub/ketans7.github.io/demo/riderbro/api/hunting.json)",
+      "Bash(cp /tmp/riderbro-index.html /Users/ketan/Documents/GitHub/ketans7.github.io/demo/riderbro/index.html)",
+      "Bash(python3 -)",
+      "Bash(python3 -m http.server 8901)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} riderbro demo\\\\n\" http://localhost:8901/demo/riderbro/index.html)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1440,1000 --screenshot=\"/tmp/shot_rb.png\" --virtual-time-budget=12000 \"http://localhost:8901/demo/riderbro/index.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,3600 --screenshot=\"/tmp/shot_resume2.png\" --virtual-time-budget=5000 \"http://localhost:8901/\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1440,1000 --screenshot=\"/tmp/shot_br2.png\" --virtual-time-budget=6000 \"http://localhost:8901/demo/business-radar/index.html\")",
+      "Bash(pkill -f \"uvicorn dashboard.server\")"
     ],
     "additionalDirectories": [
       "/private/tmp/business-radar/core",
       "/tmp/business-radar",
-      "/private/tmp/business-radar"
+      "/private/tmp/business-radar",
+      "/tmp/RiderBro",
+      "/private/tmp/RiderBro"
     ]
   }
 }

@@ -197,6 +197,8 @@
       background: linear-gradient(180deg, var(--accent-soft), #ffffff 55%);
     }
 
+    .project-card + .project-card { margin-top: 18px; }
+
     .project-tags {
       display: flex;
       flex-wrap: wrap;
@@ -303,7 +305,7 @@
       <a href="#summary">Summary</a>
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
-      <a href="#project">Featured Project</a>
+      <a href="#project">Featured Projects</a>
       <a href="#education">Education</a>
       <a href="#languages">Languages</a>
     </nav>
@@ -356,7 +358,8 @@
     </section>
 
     <section id="project">
-      <h2>Featured Project</h2>
+      <h2>Featured Projects</h2>
+
       <div class="project-card">
         <div class="entry-head">
           <h3>Business Radar — Automated Lead Generation &amp; AI Outreach Platform</h3>
@@ -370,15 +373,36 @@
           <span>Web Scraping</span><span>Selenium</span><span>SMTP / IMAP</span><span>Automation</span>
         </div>
         <ul>
-          <li><strong>Multi-source business discovery:</strong> built modular scrapers for Google Maps/Places, Yell, Yelp, and FreeIndex behind a common scanner engine, with deduplication keys, lead-quality validation, and rate limiting.</li>
-          <li><strong>AI-personalised outreach:</strong> integrated locally hosted LLMs to analyse each business's website (including screenshot capture via Selenium) and generate tailored cold emails from configurable master prompts — no cloud API costs.</li>
-          <li><strong>Full outreach lifecycle automation:</strong> SMTP sending with daily limits and randomised delays, automated day-3/7/12 follow-up sequences, IMAP reply tracking with classification, and automatic meeting detection.</li>
-          <li><strong>Lead-management dashboard:</strong> Flask web app with a pipeline view, lead profiles, an email manager for reviewing AI drafts, reply inbox, interactive map of leads, analytics, and scheduling — backed by an SQLite persistence layer.</li>
-          <li><strong>Production-minded design:</strong> dry-run mode, environment-based configuration, structured logging, duplicate prevention, and a send queue with safety limits.</li>
+          <li><strong>Multi-source business discovery:</strong> modular scrapers for Google Maps/Places, Yell, Yelp, and FreeIndex behind a common scanner engine, with deduplication keys, lead-quality validation, and rate limiting.</li>
+          <li><strong>AI-personalised outreach at zero API cost:</strong> locally hosted LLMs analyse each business's website (with Selenium screenshot capture) and generate tailored cold emails, then automate the full lifecycle — SMTP sending with safety limits, day-3/7/12 follow-ups, and IMAP reply tracking with classification.</li>
+          <li><strong>Lead-management dashboard:</strong> Flask web app with a pipeline view, AI draft review, reply inbox, interactive lead map, and analytics on an SQLite persistence layer — production-minded with dry-run mode and a rate-limited send queue.</li>
         </ul>
         <div class="btn-row">
           <a class="btn btn-primary" href="demo/business-radar/index.html">View Static Demo</a>
           <a class="btn btn-outline" href="https://github.com/ketans7/business-radar" target="_blank" rel="noopener">View Code on GitHub</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="entry-head">
+          <h3>RiderBro — AI Decision Assistant for Delivery Riders</h3>
+        </div>
+        <p class="entry-sub">
+          Telegram bot that turns a screenshot of a Deliveroo order offer into an instant accept / borderline / skip
+          verdict, grounded in the real cycling route — plus a React operator dashboard over the collected data.
+        </p>
+        <div class="project-tags">
+          <span>Python</span><span>FastAPI</span><span>React</span><span>Telegram Bot</span>
+          <span>OCR + Local VLM</span><span>Mapbox Routing</span><span>SQLite</span><span>Geospatial</span>
+        </div>
+        <ul>
+          <li><strong>Multimodal screenshot understanding:</strong> OCR with a local vision-language model fallback (MLX / Ollama) extracts the payout and every pickup/dropoff address fully on-device — screenshots never leave the rider's machine.</li>
+          <li><strong>Real-time decision engine:</strong> computes the actual cycling route via Mapbox through every stop, prices in per-stop and peak-hour friction, and returns a verdict with effective £/hour and a per-leg time breakdown in seconds.</li>
+          <li><strong>Self-improving data flywheel:</strong> every order, route, outcome, and post-delivery survey is logged to SQLite, powering positioning suggestions from OpenStreetMap venue data and a React analytics dashboard with live feed, spatial heatmaps, and hunting-ground maps.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="demo/riderbro/index.html">View Static Demo</a>
+          <a class="btn btn-outline" href="https://github.com/ketans7/RiderBro" target="_blank" rel="noopener">View Code on GitHub</a>
         </div>
       </div>
     </section>
