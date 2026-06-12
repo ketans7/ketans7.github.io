@@ -1,0 +1,56 @@
+{
+  "lead": {
+    "business_name": "Luna Hair & Beauty",
+    "category": "salon",
+    "email": "bookings@lunahairbeauty.co.uk",
+    "id": 2,
+    "location": "London",
+    "status": "replied",
+    "website": "https://lunahairbeauty.co.uk"
+  },
+  "success": true,
+  "thread": [
+    {
+      "body": "Hi Ketan, thanks for reaching out \u2014 this is actually something we've been meaning to sort out. Could you send over some examples of your work?",
+      "direction": "received",
+      "email_type": "interested",
+      "from_email": "bookings@lunahairbeauty.co.uk",
+      "id": 1,
+      "in_reply_to": "<out-001@mail>",
+      "is_read": 0,
+      "lead_id": 2,
+      "message_id": "<msg-001@mail>",
+      "reply_id": 1,
+      "subject": "Re: Quick idea for Luna Hair & Beauty's online presence",
+      "timestamp": "2026-06-08 22:12:12"
+    },
+    {
+      "body": null,
+      "direction": "sent",
+      "email_type": "initial",
+      "from_email": null,
+      "id": 2,
+      "in_reply_to": null,
+      "is_read": null,
+      "lead_id": 2,
+      "message_id": null,
+      "reply_id": null,
+      "subject": "Quick idea for Luna Hair & Beauty's online presence",
+      "timestamp": "2026-06-12T22:12:12.993643"
+    },
+    {
+      "body": null,
+      "direction": "sent",
+      "email_type": "followup_1",
+      "from_email": null,
+      "id": 3,
+      "in_reply_to": null,
+      "is_read": null,
+      "lead_id": 2,
+      "message_id": null,
+      "reply_id": null,
+      "subject": "Following up \u2014 Luna Hair & Beauty",
+      "timestamp": "2026-06-12T22:12:12.993818"
+    }
+  ]
+}

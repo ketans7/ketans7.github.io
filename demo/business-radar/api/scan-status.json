@@ -1,0 +1,45 @@
+{
+  "recent_scans": [
+    {
+      "category": "dentist",
+      "id": 4,
+      "location": "Chiswick, London",
+      "new_leads_count": 2,
+      "results_count": 15,
+      "scan_date": "2026-06-12T22:12:12.999801",
+      "source": "google_maps"
+    },
+    {
+      "category": "gym",
+      "id": 3,
+      "location": "Hackney, London",
+      "new_leads_count": 2,
+      "results_count": 19,
+      "scan_date": "2026-06-12T22:12:12.999632",
+      "source": "yelp"
+    },
+    {
+      "category": "salon",
+      "id": 2,
+      "location": "Islington, London",
+      "new_leads_count": 3,
+      "results_count": 24,
+      "scan_date": "2026-06-12T22:12:12.999444",
+      "source": "yell"
+    },
+    {
+      "category": "restaurant",
+      "id": 1,
+      "location": "Camden, London",
+      "new_leads_count": 5,
+      "results_count": 38,
+      "scan_date": "2026-06-12T22:12:12.999230",
+      "source": "google_maps"
+    }
+  ],
+  "today": {
+    "new_leads": 12,
+    "scan_count": 4,
+    "total_found": 96
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "leads": [
+    {
+      "business_name": "Riverside Physio Clinic",
+      "category": "clinic",
+      "email": "info@riversidephysio.co.uk",
+      "latest_body_preview": "Hello, yes let's set up a meeting. Are you free Thursday afternoon? Our clinic manager would like to join too.",
+      "latest_classification": "meeting",
+      "latest_received_at": "2026-06-10 22:12:12",
+      "latest_subject": "Re: Quick idea for Riverside Physio Clinic's online presence",
+      "lead_id": 3,
+      "reply_count": 1,
+      "status": "meeting",
+      "unread_count": 1
+    },
+    {
+      "business_name": "Luna Hair & Beauty",
+      "category": "salon",
+      "email": "bookings@lunahairbeauty.co.uk",
+      "latest_body_preview": "Hi Ketan, thanks for reaching out \u2014 this is actually something we've been meaning to sort out. Could you send over some examples of your work?",
+      "latest_classification": "interested",
+      "latest_received_at": "2026-06-08 22:12:12",
+      "latest_subject": "Re: Quick idea for Luna Hair & Beauty's online presence",
+      "lead_id": 2,
+      "reply_count": 1,
+      "status": "replied",
+      "unread_count": 1
+    },
+    {
+      "business_name": "Pinnacle Yoga Studio",
+      "category": "gym",
+      "email": "namaste@pinnacleyoga.co.uk",
+      "latest_body_preview": "Hi, interesting points about the booking page. What would something like this cost roughly?",
+      "latest_classification": "interested",
+      "latest_received_at": "2026-06-05 22:12:12",
+      "latest_subject": "Re: Quick idea for Pinnacle Yoga Studio's online presence",
+      "lead_id": 11,
+      "reply_count": 1,
+      "status": "replied",
+      "unread_count": 1
+    }
+  ],
+  "success": true
+}

@@ -1,0 +1,17 @@
+{
+  "draft": {
+    "ai_model": "llama3.1:8b",
+    "analysis": "Website analysis: Riverside Physio Clinic has strong reviews (4.9/5) but weak booking funnel. Opportunity: review widgets + GBP optimisation.",
+    "body": "Hi Riverside,\n\nI came across Riverside Physio Clinic while researching standout clinics in London \u2014 your reviews really caught my eye, especially how often customers mention the team by name.\n\nI noticed a couple of quick wins on your website that could help more locals find and book with you:\n\n1. Your Google Business Profile isn't linked to your booking page, so mobile visitors drop off before they can book.\n2. The site isn't surfacing your 4.5+ star reviews, which is your strongest conversion asset.\n\nI help local businesses fix exactly this \u2014 usually a 2-3 week project with measurable booking uplift. Would you be open to a quick 15-minute call next week?\n\nBest regards,\nKetan Sharma\nDigital Growth Consultant",
+    "created_at": "2026-06-12 21:12:12",
+    "id": 3,
+    "lead_id": 3,
+    "parsed_analysis": {},
+    "prompt_name": "Local business outreach v2",
+    "screenshots_used": 3,
+    "sent_at": null,
+    "status": "draft",
+    "subject": "Quick idea for Riverside Physio Clinic's online presence"
+  },
+  "success": true
+}

@@ -1,0 +1,56 @@
+{
+  "lead": {
+    "business_name": "Riverside Physio Clinic",
+    "category": "clinic",
+    "email": "info@riversidephysio.co.uk",
+    "id": 3,
+    "location": "London",
+    "status": "meeting",
+    "website": "https://riversidephysio.co.uk"
+  },
+  "success": true,
+  "thread": [
+    {
+      "body": "Hello, yes let's set up a meeting. Are you free Thursday afternoon? Our clinic manager would like to join too.",
+      "direction": "received",
+      "email_type": "meeting",
+      "from_email": "info@riversidephysio.co.uk",
+      "id": 2,
+      "in_reply_to": "<out-002@mail>",
+      "is_read": 0,
+      "lead_id": 3,
+      "message_id": "<msg-002@mail>",
+      "reply_id": 2,
+      "subject": "Re: Quick idea for Riverside Physio Clinic's online presence",
+      "timestamp": "2026-06-10 22:12:12"
+    },
+    {
+      "body": null,
+      "direction": "sent",
+      "email_type": "initial",
+      "from_email": null,
+      "id": 4,
+      "in_reply_to": null,
+      "is_read": null,
+      "lead_id": 3,
+      "message_id": null,
+      "reply_id": null,
+      "subject": "Quick idea for Riverside Physio Clinic's online presence",
+      "timestamp": "2026-06-12T22:12:12.993998"
+    },
+    {
+      "body": null,
+      "direction": "sent",
+      "email_type": "followup_1",
+      "from_email": null,
+      "id": 5,
+      "in_reply_to": null,
+      "is_read": null,
+      "lead_id": 3,
+      "message_id": null,
+      "reply_id": null,
+      "subject": "Following up \u2014 Riverside Physio Clinic",
+      "timestamp": "2026-06-12T22:12:12.994180"
+    }
+  ]
+}

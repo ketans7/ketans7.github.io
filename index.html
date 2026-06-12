@@ -1,179 +1,428 @@
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
-  <title>Personal webpage</title>
-  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
-  <link href="css/frame.css" media="screen" rel="stylesheet" type="text/css" />
-  <link href="css/controls.css" media="screen" rel="stylesheet" type="text/css" />
-  <link href="css/custom.css" media="screen" rel="stylesheet" type="text/css" />
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="js/menu.js"></script>
-  <script>
-    (function (i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date();
-      a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-      a.async = 1;
-      a.src = g;
-      m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    ga('create', 'UA-103598896-1', 'auto');
-    ga('send', 'pageview');
-  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ketan Sharma — Data Science &amp; AI Engineer | CV</title>
+  <meta name="description"
+    content="CV of Ketan Sharma — Data Science & AI engineer in London. MSc Data Science & AI (UAL CCI), ex-DNEG Crowd Technical Director. Python, ML, computer vision, LLMs, full-stack AI systems.">
+  <meta name="author" content="Ketan Sharma">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #111827;
+      --body: #374151;
+      --muted: #6b7280;
+      --accent: #1d4ed8;
+      --accent-soft: #eff6ff;
+      --line: #e5e7eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--body);
+      background: var(--bg);
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 24px 20px 64px;
+    }
+
+    /* ============ Header ============ */
+    .resume-header {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 32px;
+      display: flex;
+      gap: 28px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .resume-header img {
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent-soft);
+      flex-shrink: 0;
+    }
+
+    .resume-header h1 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .headline {
+      margin: 4px 0 12px;
+      font-size: 16.5px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+      font-size: 14.5px;
+      color: var(--muted);
+    }
+
+    .contact-row span { white-space: nowrap; }
+
+    /* ============ Section nav ============ */
+    .section-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 26px;
+    }
+
+    .section-nav a {
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--body);
+    }
+
+    .section-nav a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ============ Sections ============ */
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 22px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--ink);
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+
+    h2 + * { margin-top: 0; }
+
+    h3 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .entry { margin-bottom: 22px; }
+    .entry:last-child { margin-bottom: 0; }
+
+    .entry-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .entry-sub {
+      font-size: 14.5px;
+      color: var(--muted);
+      margin: 2px 0 8px;
+    }
+
+    .entry-date {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    ul { margin: 8px 0 0; padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    li:last-child { margin-bottom: 0; }
+
+    /* ============ Skills ============ */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 175px 1fr;
+      gap: 10px 18px;
+      font-size: 15px;
+    }
+
+    .skills-grid dt {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .skills-grid dd { margin: 0; }
+
+    /* ============ Featured project ============ */
+    .project-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px 24px;
+      background: linear-gradient(180deg, var(--accent-soft), #ffffff 55%);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0 4px;
+    }
+
+    .project-tags span {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid #dbeafe;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      display: inline-block;
+      font-size: 14.5px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover { background: #1e40af; text-decoration: none; }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--accent);
+    }
+
+    .btn-outline:hover { background: var(--accent-soft); text-decoration: none; }
+
+    /* ============ Footer ============ */
+    footer {
+      text-align: center;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* ============ Responsive ============ */
+    @media (max-width: 640px) {
+      .resume-header { padding: 24px 20px; }
+      section { padding: 22px 20px; }
+      .skills-grid { grid-template-columns: 1fr; gap: 2px 0; }
+      .skills-grid dd { margin-bottom: 10px; }
+      .entry-head { flex-direction: column; gap: 2px; }
+    }
+
+    /* ============ Print (clean one-page CV) ============ */
+    @media print {
+      body { background: #ffffff; font-size: 12px; }
+      .page { max-width: 100%; padding: 0; }
+      .section-nav, .btn-row, footer { display: none; }
+      section, .resume-header, .project-card {
+        border: none;
+        border-radius: 0;
+        padding: 0 0 14px;
+        margin-bottom: 10px;
+        background: #ffffff;
+      }
+      .resume-header img { display: none; }
+      h2 { border-bottom: 1px solid #000; }
+      a { color: inherit; }
+    }
+  </style>
 </head>
 
 <body>
-  <div class="menu-container"></div>
-  <div class="content-container">
-    <div class="content">
-      <div class="content-table flex-column">
-        <div class="flex-row">
-          <div class="flex-item flex-column">
-            <img class="image" id="me" src="img/Profilepic.jpg">
-          </div>
-          <div class="flex-item flex-column">
-            <h2>Ketan Sharma</h2>
-            <p class="text">
-              London, UK | <a href="https://www.linkedin.com/in/ketan-sharma-b7556a1b2/" target="_blank">LinkedIn</a> | <a href="https://github.com/23046385" target="_blank">GitHub</a><br>
-              ketan7sharma@gmail.com | +44 07818980305
-            </p>
-          </div>
-        </div>
-        <div class="flex-row">
-          <div class="flex-item flex-column">
-            <h2>Biography</h2>
-            <hr>
-            <p class="text">
-              I'm a 22-year-old MSc Data Science & AI student at UAL Creative Computing Institute, London, UK, originally from Mumbai, India. Specializing in computer vision, deep learning, and LLMs with professional experience as crowd technical director at DNEG. I focus on MLOps, RAG systems, agentic AI, and scalable deployments on cloud and simulated systems. I have experience working with Python, C++, TensorFlow, PyTorch, and a range of creative and technical tools for building AI-driven media solutions and real-time interactive experiences. My recent projects include emotion-based media playback, AI-powered interactive systems, and optimization algorithms for scalable applications. Coming from an underprivileged background, I've reached this position through merit and determination, and I'm known as a reliable team player with strong adaptability and communication skills. I stay physically active through running and weightlifting, maintain aquariums, explore quantum computing, and enjoy cooking. Always open to collaborations in AI, creative technology, and advanced coding challenges.
-            </p>
-            <h3>Table of Content</h3>
-            <ul>
-              <li><a href="#skills">Key Skills</a></li>
-              <li><a href="#education">Education</a></li>
-              <li><a href="#employment">Employment</a></li>
-              <li><a href="#projects">Projects</a></li>
-              <li><a href="#languages">Languages</a></li>
-              <li><a href="#hobbies">Hobbies</a></li>
-            </ul>
+  <div class="page">
 
-            <h2 id="skills">Key Skills</h2>
-            <hr>
-            <ul>
-                <li><b>Programming Languages:</b> Python, C++, JavaScript</li>
-                <li><b>Machine Learning Frameworks:</b> TensorFlow, PyTorch, Scikit-learn, Keras</li>
-                <li><b>Data Science Tools:</b> Pandas, NumPy, Matplotlib, Data Analysis, Data Wrangling</li>
-                <li><b>AI Specializations:</b> Computer Vision, Deep Learning, Natural Language Processing (NLP), Generative AI, Reinforcement Learning</li>
-                <li><b>Cloud Platforms:</b> AWS, Azure, Google Cloud Platform</li>
-                <li><b>Technical Capabilities:</b> Real-time Systems, Algorithmic Problem-Solving, Simulation, Optimization</li>
-            </ul>
-
-            <h3>Personal Attributes</h3>
-            <ul>
-                <li><b>Team Player:</b> Collaborative approach with strong communication skills across diverse teams</li>
-                <li><b>Adaptable:</b> Quick to learn new technologies and adjust to changing project requirements</li>
-                <li><b>Reliable:</b> Consistent delivery of high-quality work with attention to detail</li>
-                <li><b>Innovation-Driven:</b> Passionate about applying cutting-edge AI solutions to real-world problems</li>
-                <li><b>Research-Oriented:</b> Strong analytical thinking and problem-solving capabilities</li>
-            </ul>
-
-            <h2 id="education">Education</h2>
-            <hr>
-            <ul>
-              <li><b>MSc, Data Science & AI for the Creative Industries</b>, UAL Creative Computing Institute, London, UK (2024-2025)
-                <ul>
-                    <li>Specializing in Computer Vision, Deep Learning, and real-time AI applications</li>
-                    <li>Focus on applying AI algorithms to creative and industrial problem-solving</li>
-                </ul>
-              </li>
-              <li><b>BSc, Animation, Interactive Technology, Video Graphics & Special Effects</b>, Amity University Mumbai, Mumbai, India (2020-2023)
-                <ul>
-                    <li>Developed strong technical foundation in creative technology and problem-solving</li>
-                    <li>Built expertise in digital content creation and technical workflows</li>
-                </ul>
-              </li>
-            </ul>
-
-            <h2 id="employment">Employment</h2>
-            <hr>
-            <ul>
-              <li><b>Crowd Technical Director</b>, DNEG, Mumbai, India (Jan 2022 - Jun 2023)
-                <ul>
-                    <li>Developed and implemented sophisticated crowd simulations for film and television productions</li>
-                    <li>Applied algorithmic problem-solving using Python/C++ scripting to optimize crowd behaviors and large-scale scene efficiency</li>
-                    <li>Collaborated with VFX teams to integrate complex simulations, ensuring technical accuracy and artistic vision</li>
-                    <li>Managed technical workflows for large-scale projects, ensuring assets were properly structured and accessible</li>
-                </ul>
-              </li>
-            </ul>
-
-            <h2 id="projects">Projects</h2>
-            <hr>
-            <li style="list-style: none;"><h3><b>Automated Music Festival Poster Image Generation</b></h3>
-            <a href="https://github.com/cci-student/NLP-project" target="_blank">View Project</a>
-            <ul>
-                <li><b>Deep Learning Image Generation:</b> Integrated Stable Diffusion 3 (SD3) and Florence-2 models for high-quality automated poster generation with advanced text-to-image synthesis capabilities</li>
-                <li><b>LLM-Powered Prompt Engineering:</b> Implemented large language model integration for dynamic prompt optimization and refinement, enabling context-aware content generation</li>
-                <li><b>Hyper-Personalization Pipeline:</b> Developed automated workflow for generating customized promotional content based on user demographics and preferences with scalable batch processing</li>
-                <li><b>Multi-Modal AI Integration:</b> Combined computer vision models with natural language processing for intelligent text encoding and visual content generation</li>
-                <li><b>Production-Ready Workflow:</b> Built end-to-end automation pipeline including image loading, resizing, text processing, generation, and output management with iterative refinement capabilities</li>
-                <li><b>Scalable Architecture:</b> Designed system for processing multiple images with efficient resource management and automated quality control mechanisms</li>
-            </ul>
-            </li>
-
-            <li style="list-style: none;"><h3><b>AI-Powered Emotion-Responsive Music System</b></h3>
-            <a href="https://git.arts.ac.uk/23046385/AI-4-Media-Project-Ketan-Sharma" target="_blank">View Project</a>
-            <ul>
-                <li><b>Custom CNN Architecture:</b> Built a 4-layer convolutional neural network with batch normalization and dropout regularization, achieving 82% accuracy on emotion classification across 7 emotional states.</li>
-                <li><b>Real-time Computer Vision Pipeline:</b> Implemented an OpenCV-based face detection and emotion recognition system with optimized frame processing for real-time webcam input.</li>
-                <li><b>Advanced Model Training:</b> Employed class-weighted loss functions, weighted random sampling, and data augmentation to handle imbalanced datasets and improve model generalization.</li>
-                <li><b>Multi-threaded Architecture:</b> Designed a concurrent processing system with separate threads for video capture, emotion detection, and audio playback to ensure smooth real-time performance.</li>
-                <li><b>Audio Processing Integration:</b> Integrated librosa for dynamic tempo scaling and time-stretching algorithms that modify music playback based on detected emotional states.</li>
-                <li><b>PyTorch Deep Learning:</b> Utilized the PyTorch framework with the Adam optimizer, learning rate scheduling, and label smoothing for robust model training and convergence.</li>
-            </ul>
-            </li>
-
-            <li style="list-style: none;"><h3><b>Virtual Real-time Clothing Try-on System</b></h3>
-            <a href="https://github.com/23046385/AI-Powered-Virtual-Try-On-System" target="_blank">View Project</a>
-            <ul>
-                <li><b>Currently building</b> a real-time virtual fitting solution that enables users to try on clothing digitally using computer vision and augmented reality techniques</li>
-                <li><b>Project in active development phase</b></li>
-            </ul>
-            </li>
-
-            <li style="list-style: none;"><h3><b>Health Habit Buddy</b></h3>
-            <a href="https://github.com/23046385/Health-Habit-Buddy" target="_blank">View Project</a>
-            <ul>
-                <li><b>Local AI Integration:</b> Implemented offline-first architecture using Ollama and LLaMA 2 model for privacy-focused AI text generation without cloud dependencies</li>
-                <li><b>Streamlit Framework:</b> Built clean, modern user interface using Streamlit with minimalist black-and-white design for optimal user experience</li>
-                <li><b>Privacy-Focused Architecture:</b> Developed 100% local processing system ensuring user data remains on-device with no external data transmission</li>
-                <li><b>Personalized AI Messaging:</b> Created intelligent encouragement system that generates contextual motivational messages based on user habit completion patterns</li>
-                <li><b>Offline-First Design:</b> Engineered application to function completely offline, targeting wellness creators and health-conscious users prioritizing data privacy</li>
-            </ul>
-            </li>
-
-            <h2 id="languages">Languages</h2>
-            <hr>
-            <ul>
-                <li>English: Fluent</li>
-                <li>Hindi: Native</li>
-                <li>Thethi: Native</li>
-                <li>Marathi: Conversational</li>
-            </ul>
-
-            <h2 id="hobbies">Hobbies</h2>
-            <hr>
-            <p>I stay physically active through running and weightlifting, maintain aquariums, explore quantum computing, and enjoy cooking.</p>
-          </div>
+    <header class="resume-header">
+      <img src="img/Profilepic.jpg" alt="Photo of Ketan Sharma">
+      <div>
+        <h1>Ketan Sharma</h1>
+        <p class="headline">Data Science &amp; AI Engineer · Computer Vision · LLMs &amp; Agentic Systems</p>
+        <div class="contact-row">
+          <span>London, United Kingdom</span>
+          <span><a href="mailto:ketan7sharma@gmail.com">ketan7sharma@gmail.com</a></span>
+          <span>+44 7818 980305</span>
+          <span><a href="https://www.linkedin.com/in/ketan-sharma-b7556a1b2/" target="_blank" rel="noopener">LinkedIn</a></span>
+          <span><a href="https://github.com/ketans7" target="_blank" rel="noopener">GitHub</a></span>
+          <span><a href="file/CV-Main.pdf" target="_blank">Download CV (PDF)</a></span>
         </div>
       </div>
-    </div>
+    </header>
+
+    <nav class="section-nav" aria-label="Sections">
+      <a href="#summary">Summary</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#project">Featured Project</a>
+      <a href="#education">Education</a>
+      <a href="#languages">Languages</a>
+    </nav>
+
+    <section id="summary">
+      <h2>Professional Summary</h2>
+      <p>
+        Data Science &amp; AI engineer (MSc, UAL Creative Computing Institute, London) specialising in computer
+        vision, deep learning, and LLM-powered systems. Previously Crowd Technical Director at DNEG, building
+        large-scale simulations for film and television with Python and C++. Hands-on with the full lifecycle of
+        AI products — data pipelines, model training, RAG and agentic workflows, and deployment of end-to-end
+        systems with web dashboards and automation. Reliable team player with strong communication skills,
+        seeking roles in AI engineering, machine learning, and data science.
+      </p>
+    </section>
+
+    <section id="skills">
+      <h2>Core Skills</h2>
+      <dl class="skills-grid">
+        <dt>Programming</dt>
+        <dd>Python, C++, JavaScript, SQL</dd>
+        <dt>Machine Learning</dt>
+        <dd>PyTorch, TensorFlow, Keras, Scikit-learn, model training &amp; evaluation, data augmentation</dd>
+        <dt>AI Specialisations</dt>
+        <dd>Computer Vision, Deep Learning, NLP, Generative AI, LLM integration, RAG, agentic AI, prompt engineering</dd>
+        <dt>Data &amp; Tooling</dt>
+        <dd>Pandas, NumPy, Matplotlib, SQLite, data wrangling &amp; analysis, web scraping (BeautifulSoup, Selenium)</dd>
+        <dt>Web &amp; Systems</dt>
+        <dd>Flask, REST APIs, real-time systems, multi-threading, automation pipelines, Git</dd>
+        <dt>Cloud &amp; MLOps</dt>
+        <dd>AWS, Azure, Google Cloud Platform, local LLM deployment (Ollama), scalable deployments</dd>
+      </dl>
+    </section>
+
+    <section id="experience">
+      <h2>Professional Experience</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <h3>Crowd Technical Director — DNEG</h3>
+          <span class="entry-date">Jan 2022 – Jun 2023</span>
+        </div>
+        <p class="entry-sub">Mumbai, India · Film &amp; television VFX</p>
+        <ul>
+          <li>Developed and implemented large-scale crowd simulations for major film and television productions.</li>
+          <li>Applied algorithmic problem-solving in Python and C++ to optimise crowd behaviours and improve the efficiency of complex, large-scale scenes.</li>
+          <li>Collaborated with VFX teams to integrate simulations into shots, balancing technical accuracy with artistic direction.</li>
+          <li>Managed technical workflows and asset structures across large projects, keeping pipelines reliable and accessible for the whole team.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="project">
+      <h2>Featured Project</h2>
+      <div class="project-card">
+        <div class="entry-head">
+          <h3>Business Radar — Automated Lead Generation &amp; AI Outreach Platform</h3>
+        </div>
+        <p class="entry-sub">
+          End-to-end system that finds local businesses, analyses their web presence with AI, and runs a complete
+          personalised email outreach pipeline — built solo in Python.
+        </p>
+        <div class="project-tags">
+          <span>Python</span><span>Flask</span><span>SQLite</span><span>Local LLMs (Ollama)</span>
+          <span>Web Scraping</span><span>Selenium</span><span>SMTP / IMAP</span><span>Automation</span>
+        </div>
+        <ul>
+          <li><strong>Multi-source business discovery:</strong> built modular scrapers for Google Maps/Places, Yell, Yelp, and FreeIndex behind a common scanner engine, with deduplication keys, lead-quality validation, and rate limiting.</li>
+          <li><strong>AI-personalised outreach:</strong> integrated locally hosted LLMs to analyse each business's website (including screenshot capture via Selenium) and generate tailored cold emails from configurable master prompts — no cloud API costs.</li>
+          <li><strong>Full outreach lifecycle automation:</strong> SMTP sending with daily limits and randomised delays, automated day-3/7/12 follow-up sequences, IMAP reply tracking with classification, and automatic meeting detection.</li>
+          <li><strong>Lead-management dashboard:</strong> Flask web app with a pipeline view, lead profiles, an email manager for reviewing AI drafts, reply inbox, interactive map of leads, analytics, and scheduling — backed by an SQLite persistence layer.</li>
+          <li><strong>Production-minded design:</strong> dry-run mode, environment-based configuration, structured logging, duplicate prevention, and a send queue with safety limits.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="demo/business-radar/index.html">View Static Demo</a>
+          <a class="btn btn-outline" href="https://github.com/ketans7/business-radar" target="_blank" rel="noopener">View Code on GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <h2>Education</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <h3>MSc Data Science &amp; AI for the Creative Industries</h3>
+          <span class="entry-date">2024 – 2025</span>
+        </div>
+        <p class="entry-sub">UAL Creative Computing Institute, London, UK</p>
+        <ul>
+          <li>Specialised in computer vision, deep learning, and real-time AI applications.</li>
+          <li>Focus on applying AI algorithms to creative and industrial problem-solving.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <h3>BSc Animation, Interactive Technology, Video Graphics &amp; Special Effects</h3>
+          <span class="entry-date">2020 – 2023</span>
+        </div>
+        <p class="entry-sub">Amity University Mumbai, India</p>
+        <ul>
+          <li>Strong technical foundation in creative technology, digital content creation, and technical workflows.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="languages">
+      <h2>Languages &amp; Interests</h2>
+      <p>
+        <strong>Languages:</strong> English (fluent), Hindi (native), Thethi (native), Marathi (conversational)
+      </p>
+      <p>
+        <strong>Interests:</strong> running and weightlifting, aquarium keeping, quantum computing, cooking.
+      </p>
+    </section>
+
+    <footer>
+      Ketan Sharma · London, UK ·
+      <a href="https://github.com/ketans7" target="_blank" rel="noopener">github.com/ketans7</a>
+    </footer>
+
   </div>
 </body>
 

@@ -1,0 +1,24 @@
+{
+  "by_category": {
+    "clinic": 1,
+    "dentist": 1,
+    "estate agent": 1,
+    "event venue": 1,
+    "gym": 2,
+    "hotel": 1,
+    "restaurant": 3,
+    "salon": 1,
+    "spa": 1
+  },
+  "by_status": {
+    "booked": 1,
+    "contacted": 4,
+    "followed_up": 1,
+    "meeting": 1,
+    "new": 3,
+    "replied": 2
+  },
+  "emails_today": 17,
+  "new_today": 0,
+  "total_leads": 12
+}

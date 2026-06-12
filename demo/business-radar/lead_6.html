@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hartley &amp; Co Estate Agents - Business Radar</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #818cf8;
+            --secondary-color: #6366f1;
+            --accent-violet: #a78bfa;
+            --success-color: #34d399;
+            --warning-color: #fbbf24;
+            --danger-color: #f87171;
+            --info-color: #38bdf8;
+            --dark-color: #0f172a;
+            --light-bg: #090b11;
+            --surface-color: #11141d;
+            --surface-muted: #181c28;
+            --surface-hover: #1d2230;
+            --border-color: #232838;
+            --border-subtle: rgba(148, 163, 184, 0.09);
+            --text-color: #e7eaf2;
+            --muted-text: #8c94a8;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px -12px rgba(0,0,0,0.5);
+            --shadow-pop: 0 12px 32px -8px rgba(0,0,0,0.6);
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --sidebar-width: 256px;
+        }
+
+        * { scrollbar-width: thin; scrollbar-color: #2b3247 transparent; }
+        ::-webkit-scrollbar { width: 9px; height: 9px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2b3247; border-radius: 99px; border: 2px solid transparent; background-clip: content-box; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b4258; border: 2px solid transparent; background-clip: content-box; }
+
+        ::selection { background: rgba(129, 140, 248, 0.35); }
+
+        body {
+            background-color: var(--light-bg);
+            background-image:
+                radial-gradient(1100px 480px at 85% -10%, rgba(99, 102, 241, 0.07), transparent 60%),
+                radial-gradient(900px 420px at -10% 100%, rgba(139, 92, 246, 0.05), transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-feature-settings: 'cv02', 'cv03', 'cv11';
+            letter-spacing: -0.011em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 { letter-spacing: -0.02em; }
+
+        /* ============ Sidebar ============ */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            background: rgba(13, 16, 24, 0.85);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border-subtle);
+            padding: 1.5rem 1rem;
+            z-index: 1000;
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar .logo {
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.75rem;
+            padding: 0 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .sidebar .logo .logo-mark {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 14px -4px rgba(99, 102, 241, 0.55);
+        }
+
+        .sidebar .nav-section-label {
+            font-size: 0.66rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: #5b6478;
+            padding: 0 0.85rem;
+            margin: 1.1rem 0 0.4rem;
+        }
+
+        .sidebar .nav-link {
+            color: #9aa3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.6rem 0.85rem;
+            border-radius: 0.6rem;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(148, 163, 184, 0.07);
+            color: #e7eaf2;
+        }
+
+        .sidebar .nav-link.active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.16), rgba(139, 92, 246, 0.07));
+            color: #c7d2fe;
+        }
+
+        .sidebar .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 18px;
+            border-radius: 99px;
+            background: var(--accent-gradient);
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.7rem;
+            width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .sidebar .sidebar-footer {
+            margin-top: auto;
+            padding: 0.85rem;
+            border-radius: var(--radius-md);
+            background: rgba(148, 163, 184, 0.05);
+            border: 1px solid var(--border-subtle);
+            font-size: 0.78rem;
+            color: var(--muted-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.18);
+            animation: pulse-dot 2.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.18); }
+            50% { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.07); }
+        }
+
+        /* Mobile toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1050;
+            width: 42px;
+            height: 42px;
+            border-radius: 0.65rem;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-color);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem 2.25rem;
+            animation: page-in 0.35s ease both;
+        }
+
+        @keyframes page-in {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        /* ============ Cards & Containers ============ */
+        .stat-card {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.04), transparent 38%), var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(129, 140, 248, 0.28);
+            box-shadow: var(--shadow-pop);
+        }
+
+        .stat-card .stat-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-color);
+            line-height: 1.15;
+        }
+
+        .stat-card .stat-label {
+            color: var(--muted-text);
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .table-container {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.03), transparent 30%), var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .filter-bar {
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* ============ Tables ============ */
+        .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: var(--text-color);
+            --bs-table-border-color: var(--border-subtle);
+            --bs-table-striped-bg: rgba(148, 163, 184, 0.04);
+            --bs-table-hover-bg: rgba(129, 140, 248, 0.05);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--muted-text);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 0.9rem 0.75rem;
+        }
+
+        /* ============ Badges ============ */
+        .badge {
+            font-weight: 600;
+            font-size: 0.72rem;
+            letter-spacing: 0.01em;
+            padding: 0.4em 0.7em;
+            border-radius: 99px;
+        }
+
+        /* Soft tinted badges (modern pill style) */
+        .badge.bg-primary { background: rgba(129, 140, 248, 0.16) !important; color: #a5b4fc !important; }
+        .badge.bg-secondary { background: rgba(148, 163, 184, 0.14) !important; color: #b6bfd1 !important; }
+        .badge.bg-success { background: rgba(52, 211, 153, 0.14) !important; color: #6ee7b7 !important; }
+        .badge.bg-warning { background: rgba(251, 191, 36, 0.14) !important; color: #fcd34d !important; }
+        .badge.bg-danger { background: rgba(248, 113, 113, 0.14) !important; color: #fca5a5 !important; }
+        .badge.bg-info { background: rgba(56, 189, 248, 0.14) !important; color: #7dd3fc !important; }
+        .badge.bg-light { background: rgba(148, 163, 184, 0.12) !important; color: var(--text-color) !important; }
+        .badge.bg-dark { background: rgba(148, 163, 184, 0.1) !important; color: var(--muted-text) !important; }
+        .badge.bg-purple { background: rgba(167, 139, 250, 0.16) !important; color: #c4b5fd !important; }
+
+        .bg-purple { background-color: #8b5cf6 !important; }
+
+        /* ============ Buttons ============ */
+        .btn { border-radius: 0.6rem; font-weight: 500; transition: all 0.15s ease; }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            border: none;
+            box-shadow: 0 2px 10px -2px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background: linear-gradient(135deg, #5558e8 0%, #7c4ff0 100%);
+            box-shadow: 0 4px 16px -2px rgba(99, 102, 241, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active { transform: none; }
+
+        .btn-outline-primary { border-color: rgba(129, 140, 248, 0.4); color: #a5b4fc; }
+        .btn-outline-primary:hover { background: rgba(129, 140, 248, 0.12); border-color: #818cf8; color: #c7d2fe; }
+
+        .btn-outline-secondary { border-color: var(--border-color); color: var(--muted-text); }
+        .btn-outline-secondary:hover { background: var(--surface-hover); border-color: #3b4258; color: var(--text-color); }
+
+        .btn-action { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+
+        /* ============ Forms ============ */
+        .form-control, .form-select, textarea, input.search-input {
+            background-color: var(--surface-muted) !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            border-radius: 0.6rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: rgba(129, 140, 248, 0.55) !important;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.14) !important;
+        }
+
+        .form-control::placeholder { color: #5b6478; }
+
+        .search-input {
+            border-radius: 0.6rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .form-check-input { background-color: var(--surface-muted); border-color: #3b4258; }
+        .form-check-input:checked { background-color: var(--secondary-color); border-color: var(--secondary-color); }
+
+        /* ============ Page Header ============ */
+        .page-header { margin-bottom: 1.75rem; }
+
+        .page-header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .page-header .subtitle {
+            color: var(--muted-text);
+            font-size: 0.92rem;
+            margin-top: 0.3rem;
+            margin-bottom: 0;
+        }
+
+        /* ============ Misc components ============ */
+        .alert { border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+
+        .modal-content {
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-pop);
+        }
+
+        .dropdown-menu {
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-pop);
+            padding: 0.4rem;
+        }
+
+        .dropdown-item { border-radius: 0.45rem; padding: 0.45rem 0.75rem; font-size: 0.9rem; }
+        .dropdown-item:hover { background: var(--surface-hover); }
+
+        .pagination .page-link {
+            background: var(--surface-color);
+            border-color: var(--border-color);
+            color: var(--muted-text);
+            border-radius: 0.5rem;
+            margin: 0 2px;
+        }
+        .pagination .page-item.active .page-link {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        .list-group-item-action:hover { background-color: var(--surface-hover) !important; }
+
+        /* Dark theme fixes for light-mode leftovers */
+        [data-bs-theme=dark] .bg-light { background-color: var(--surface-muted) !important; }
+        [data-bs-theme=dark] .text-dark { color: var(--text-color) !important; }
+        [data-bs-theme=dark] .bg-white { background-color: var(--surface-color) !important; }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: none; box-shadow: var(--shadow-pop); }
+            .sidebar-toggle { display: flex; }
+            .sidebar-backdrop.show { display: block; }
+            .main-content { margin-left: 0; padding: 4.5rem 1rem 1.5rem; }
+        }
+
+        /* Spinning animation for scanning indicator */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin 2s linear infinite;
+            display: inline-block;
+        }
+
+        .text-muted {
+            color: var(--muted-text) !important;
+        }
+
+        .card,
+        .modal-content,
+        .dropdown-menu,
+        .list-group-item,
+        .leads-panel,
+        .composer-panel,
+        .panel-header,
+        .lead-item,
+        .composer-actions,
+        .email-to,
+        .analysis-panel,
+        .queue-display,
+        .batch-actions-bar {
+            background-color: var(--surface-color) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        .lead-item:hover,
+        .lead-item.active,
+        .lead-item.selected {
+            background-color: var(--surface-muted) !important;
+        }
+
+        .lead-name,
+        .lead-name a,
+        .stats-bar strong {
+            color: var(--text-color) !important;
+        }
+
+        .lead-meta,
+        .stats-bar {
+            color: var(--muted-text) !important;
+        }
+    </style>
+    
+    
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    #leadMap {
+        height: 400px;
+        border-radius: 8px;
+    }
+    .business-info-table td {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+    .business-info-table td:first-child {
+        width: 140px;
+        color: var(--muted-text);
+        font-weight: 500;
+    }
+</style>
+
+</head>
+<body>
+<script>
+/* Static demo shim: serve captured API JSON, disable mutating actions. */
+(function () {
+  var realFetch = window.fetch.bind(window);
+  function apiFile(path) {
+    var clean = path.split('?')[0].replace(/^\/api\//, '').replace(/\/$/, '');
+    return 'api/' + clean.replace(/\//g, '_') + '.json';
+  }
+  window.fetch = function (input, init) {
+    var url = (typeof input === 'string') ? input : (input && input.url) || '';
+    var method = ((init && init.method) || (input && input.method) || 'GET').toUpperCase();
+    if (/^https?:/.test(url) && url.indexOf(location.origin) !== 0) {
+      return realFetch(input, init); // external CDN/API calls pass through
+    }
+    if (url.indexOf('/api/') === 0 || url.indexOf('api/') === 0) {
+      if (method === 'GET') {
+        return realFetch(apiFile(url.replace(/^(?!\/)/, '/'))).then(function (r) {
+          if (r.ok) return r;
+          return new Response('{"success": true, "items": [], "leads": [], "drafts": []}',
+            { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }).catch(function () {
+          return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+        });
+      }
+      demoNotice();
+      return Promise.resolve(new Response('{"success": false, "error": "Static demo - actions are disabled"}',
+        { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    }
+    return realFetch(input, init);
+  };
+  function demoNotice() {
+    var n = document.getElementById('demo-notice-toast');
+    if (!n) {
+      n = document.createElement('div');
+      n.id = 'demo-notice-toast';
+      n.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:10px 18px;border-radius:8px;z-index:99999;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.35);transition:opacity .3s;';
+      n.textContent = 'This is a static demo \u2014 interactive actions are disabled.';
+      document.body.appendChild(n);
+    }
+    n.style.opacity = '1';
+    clearTimeout(n._t);
+    n._t = setTimeout(function () { n.style.opacity = '0'; }, 2500);
+  }
+  document.addEventListener('submit', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    demoNotice();
+  }, true);
+  document.addEventListener('DOMContentLoaded', function () {
+    var bar = document.createElement('div');
+    bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99998;background:#111827;color:#e5e7eb;padding:9px 16px;font:13px/1.4 Inter,system-ui,sans-serif;text-align:center;border-top:1px solid #374151;';
+    bar.innerHTML = '\u26A1 <strong>Static demo</strong> of the Business Radar dashboard with sample data \u2014 buttons and forms are disabled. ' +
+      '&nbsp;<a href="https://github.com/ketans7/business-radar" target="_blank" rel="noopener" style="color:#60a5fa;">View source code</a>' +
+      '&nbsp;\u00B7&nbsp; <a href="../index.html" style="color:#60a5fa;">\u2190 Back to resume</a>';
+    document.body.appendChild(bar);
+    document.body.style.paddingBottom = '52px';
+  });
+})();
+</script>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">
+        <i class="bi bi-list"></i>
+    </button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <span class="logo-mark"><i class="bi bi-radar"></i></span>
+            <span>Business Radar</span>
+        </div>
+
+        <div class="nav-section-label">Overview</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="index.html">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="stats.html">
+                    <i class="bi bi-graph-up"></i> Analytics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="map.html">
+                    <i class="bi bi-geo-alt-fill"></i> Map
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">Outreach</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="leads.html">
+                    <i class="bi bi-building"></i> Leads
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="email-manager.html">
+                    <i class="bi bi-envelope-paper-fill"></i> AI Email Manager
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="followups.html">
+                    <i class="bi bi-arrow-repeat"></i> Follow-ups
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="replies.html">
+                    <i class="bi bi-inbox"></i> Replies
+                    <span class="badge bg-primary rounded-pill ms-auto" id="navReplyBadge" style="display:none;font-size:0.65rem;"></span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">System</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="settings.html">
+                    <i class="bi bi-gear"></i> Settings
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <span class="status-dot"></span> System Active
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        
+            
+        
+        
+        
+<div class="page-header">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="leads.html">Leads</a></li>
+            <li class="breadcrumb-item active">Hartley &amp; Co Estate Agents</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column - Map -->
+    <div class="col-lg-5">
+        
+        <div class="table-container">
+            <h6 class="text-muted mb-3"><i class="bi bi-geo-alt"></i> Location</h6>
+            <div id="leadMap"></div>
+            <p class="mt-3 mb-0 small text-muted">
+                <i class="bi bi-pin-map"></i> 210 Clapham High St, London SW4 7UD
+            </p>
+        </div>
+        
+    </div>
+    
+    <!-- Right Column - Business Info -->
+    <div class="col-lg-7">
+        <div class="table-container">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h2 class="mb-2">Hartley &amp; Co Estate Agents</h2>
+                    <span class="badge bg-warning fs-6">
+                        Followed up
+                    </span>
+                </div>
+                
+                <div class="text-warning fs-5">
+                    <i class="bi bi-star-fill"></i>
+                    4.1
+                </div>
+                
+            </div>
+            
+            <!-- Business Details -->
+            <h6 class="text-muted mb-3"><i class="bi bi-building"></i> Business Details</h6>
+            
+            <table class="business-info-table table table-borderless mb-4">
+                <tr>
+                    <td><i class="bi bi-tag"></i> Category</td>
+                    <td><span class="badge bg-light text-dark">estate agent</span></td>
+                </tr>
+                <tr>
+                    <td><i class="bi bi-geo"></i> Location</td>
+                    <td>London</td>
+                </tr>
+                
+                <tr>
+                    <td><i class="bi bi-telephone"></i> Phone</td>
+                    <td><a href="tel:+44 20 7946 0533">+44 20 7946 0533</a></td>
+                </tr>
+                
+                
+                <tr>
+                    <td><i class="bi bi-envelope"></i> Email</td>
+                    <td><a href="mailto:sales@hartleyandco.co.uk">sales@hartleyandco.co.uk</a></td>
+                </tr>
+                
+                
+                <tr>
+                    <td><i class="bi bi-globe"></i> Website</td>
+                    <td>
+                        <a href="https://hartleyandco.co.uk" target="_blank">
+                            https://hartleyandco.co.uk
+                            <i class="bi bi-box-arrow-up-right small"></i>
+                        </a>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td><i class="bi bi-database"></i> Source</td>
+                    <td>yell</td>
+                </tr>
+            </table>
+            
+            
+            <div class="mb-4">
+                <h6 class="text-muted mb-2"><i class="bi bi-info-circle"></i> Description</h6>
+                <p class="text-muted">Independent estate agency covering South West London.</p>
+            </div>
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+<!-- Second Row - Engagement & Actions -->
+<div class="row g-4 mt-2">
+    <!-- Engagement Tracking -->
+    <div class="col-md-4">
+        <div class="table-container">
+            <h6 class="text-muted mb-3"><i class="bi bi-activity"></i> Engagement Status</h6>
+            
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">First Seen</span>
+                <span>27 May 2026</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Last Contact</span>
+                <span>04 Jun 2026</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Follow-ups Sent</span>
+                <span>2 / 3</span>
+            </div>
+            
+            
+            <!-- Progress Bar -->
+            <div class="progress mt-3" style="height: 8px;">
+                
+                <div class="progress-bar" role="progressbar" style="width: 66%"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="col-md-4">
+        <div class="table-container">
+            <h6 class="text-muted mb-3"><i class="bi bi-sliders"></i> Quick Actions</h6>
+            
+            <form method="POST" action="#" onsubmit="return false" class="mb-3">
+                <label class="form-label small text-muted">Change Status</label>
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="new" >New</option>
+                    <option value="contacted" >Contacted</option>
+                    <option value="followed_up" selected>Followed Up</option>
+                    <option value="replied" >Replied</option>
+                    <option value="meeting" >Meeting</option>
+                    <option value="booked" >Booked</option>
+                    <option value="closed" >Closed</option>
+                    <option value="unsubscribed" >Unsubscribed</option>
+                </select>
+            </form>
+            
+            <form method="POST" action="#" onsubmit="return false">
+                <label class="form-label small text-muted">Set Meeting Date</label>
+                <div class="input-group">
+                    <input type="date" name="meeting_date" class="form-control" 
+                           value="">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-calendar-check"></i>
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2 mt-3">
+                
+                <a href="mailto:sales@hartleyandco.co.uk" class="btn btn-primary btn-sm">
+                    <i class="bi bi-envelope"></i> Send Email
+                </a>
+                
+                
+                <a href="tel:+44 20 7946 0533" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-telephone"></i> Call
+                </a>
+                
+                
+                <a href="https://hartleyandco.co.uk" target="_blank" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-globe"></i> Visit Website
+                </a>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notes Section -->
+    <div class="col-md-4">
+        <div class="table-container">
+            <h6 class="text-muted mb-3"><i class="bi bi-sticky"></i> Notes</h6>
+            <form method="POST" action="#" onsubmit="return false">
+                <textarea name="notes" class="form-control mb-2" rows="6" placeholder="Add notes about this lead..."></textarea>
+                <button type="submit" class="btn btn-sm btn-primary w-100">
+                    <i class="bi bi-save"></i> Save Notes
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+
+// Initialize map with stored coordinates (instant loading!)
+const leadMap = L.map('leadMap').setView([51.4622, -0.138], 16);
+
+// Dark themed tiles to match website
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors © CARTO',
+    maxZoom: 19
+}).addTo(leadMap);
+
+// Add highlighted marker
+const marker = L.marker([51.4622, -0.138], {
+    icon: L.divIcon({
+        className: 'custom-marker',
+        html: '<div style="background: #e74c3c; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 3px 10px rgba(0,0,0,0.3);"></div>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    })
+}).addTo(leadMap);
+
+// Add popup
+marker.bindPopup(`
+    <div style="text-align: center;">
+        <strong>Hartley &amp; Co Estate Agents</strong><br>
+        210 Clapham High St, London SW4 7UD
+    </div>
+`).openPopup();
+
+
+</script>
+
+    </main>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    // Global unread reply badge updater
+    (function(){
+        async function updateNavReplyBadge(){
+            try {
+                const res = await fetch('/api/replies/unread-count');
+                const data = await res.json();
+                const badge = document.getElementById('navReplyBadge');
+                if(badge && data.success){
+                    badge.textContent = data.count;
+                    badge.style.display = data.count > 0 ? 'inline-block' : 'none';
+                }
+            } catch(e){}
+        }
+        updateNavReplyBadge();
+        setInterval(updateNavReplyBadge, 60000);
+    })();
+
+    // Mobile sidebar toggle
+    (function(){
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('sidebarToggle');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        function close(){ sidebar.classList.remove('open'); backdrop.classList.remove('show'); }
+        toggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            backdrop.classList.toggle('show', sidebar.classList.contains('open'));
+        });
+        backdrop.addEventListener('click', close);
+        sidebar.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', close));
+    })();
+    </script>
+    
+    
+</body>
+</html>

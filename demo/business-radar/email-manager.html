@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Email Manager</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #818cf8;
+            --secondary-color: #6366f1;
+            --accent-violet: #a78bfa;
+            --success-color: #34d399;
+            --warning-color: #fbbf24;
+            --danger-color: #f87171;
+            --info-color: #38bdf8;
+            --dark-color: #0f172a;
+            --light-bg: #090b11;
+            --surface-color: #11141d;
+            --surface-muted: #181c28;
+            --surface-hover: #1d2230;
+            --border-color: #232838;
+            --border-subtle: rgba(148, 163, 184, 0.09);
+            --text-color: #e7eaf2;
+            --muted-text: #8c94a8;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px -12px rgba(0,0,0,0.5);
+            --shadow-pop: 0 12px 32px -8px rgba(0,0,0,0.6);
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --sidebar-width: 256px;
+        }
+
+        * { scrollbar-width: thin; scrollbar-color: #2b3247 transparent; }
+        ::-webkit-scrollbar { width: 9px; height: 9px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2b3247; border-radius: 99px; border: 2px solid transparent; background-clip: content-box; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b4258; border: 2px solid transparent; background-clip: content-box; }
+
+        ::selection { background: rgba(129, 140, 248, 0.35); }
+
+        body {
+            background-color: var(--light-bg);
+            background-image:
+                radial-gradient(1100px 480px at 85% -10%, rgba(99, 102, 241, 0.07), transparent 60%),
+                radial-gradient(900px 420px at -10% 100%, rgba(139, 92, 246, 0.05), transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-feature-settings: 'cv02', 'cv03', 'cv11';
+            letter-spacing: -0.011em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 { letter-spacing: -0.02em; }
+
+        /* ============ Sidebar ============ */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            background: rgba(13, 16, 24, 0.85);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border-subtle);
+            padding: 1.5rem 1rem;
+            z-index: 1000;
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar .logo {
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.75rem;
+            padding: 0 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .sidebar .logo .logo-mark {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 14px -4px rgba(99, 102, 241, 0.55);
+        }
+
+        .sidebar .nav-section-label {
+            font-size: 0.66rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: #5b6478;
+            padding: 0 0.85rem;
+            margin: 1.1rem 0 0.4rem;
+        }
+
+        .sidebar .nav-link {
+            color: #9aa3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.6rem 0.85rem;
+            border-radius: 0.6rem;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(148, 163, 184, 0.07);
+            color: #e7eaf2;
+        }
+
+        .sidebar .nav-link.active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.16), rgba(139, 92, 246, 0.07));
+            color: #c7d2fe;
+        }
+
+        .sidebar .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 18px;
+            border-radius: 99px;
+            background: var(--accent-gradient);
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.7rem;
+            width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .sidebar .sidebar-footer {
+            margin-top: auto;
+            padding: 0.85rem;
+            border-radius: var(--radius-md);
+            background: rgba(148, 163, 184, 0.05);
+            border: 1px solid var(--border-subtle);
+            font-size: 0.78rem;
+            color: var(--muted-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.18);
+            animation: pulse-dot 2.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.18); }
+            50% { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.07); }
+        }
+
+        /* Mobile toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1050;
+            width: 42px;
+            height: 42px;
+            border-radius: 0.65rem;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-color);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem 2.25rem;
+            animation: page-in 0.35s ease both;
+        }
+
+        @keyframes page-in {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        /* ============ Cards & Containers ============ */
+        .stat-card {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.04), transparent 38%), var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(129, 140, 248, 0.28);
+            box-shadow: var(--shadow-pop);
+        }
+
+        .stat-card .stat-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-color);
+            line-height: 1.15;
+        }
+
+        .stat-card .stat-label {
+            color: var(--muted-text);
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .table-container {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.03), transparent 30%), var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .filter-bar {
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* ============ Tables ============ */
+        .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: var(--text-color);
+            --bs-table-border-color: var(--border-subtle);
+            --bs-table-striped-bg: rgba(148, 163, 184, 0.04);
+            --bs-table-hover-bg: rgba(129, 140, 248, 0.05);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--muted-text);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 0.9rem 0.75rem;
+        }
+
+        /* ============ Badges ============ */
+        .badge {
+            font-weight: 600;
+            font-size: 0.72rem;
+            letter-spacing: 0.01em;
+            padding: 0.4em 0.7em;
+            border-radius: 99px;
+        }
+
+        /* Soft tinted badges (modern pill style) */
+        .badge.bg-primary { background: rgba(129, 140, 248, 0.16) !important; color: #a5b4fc !important; }
+        .badge.bg-secondary { background: rgba(148, 163, 184, 0.14) !important; color: #b6bfd1 !important; }
+        .badge.bg-success { background: rgba(52, 211, 153, 0.14) !important; color: #6ee7b7 !important; }
+        .badge.bg-warning { background: rgba(251, 191, 36, 0.14) !important; color: #fcd34d !important; }
+        .badge.bg-danger { background: rgba(248, 113, 113, 0.14) !important; color: #fca5a5 !important; }
+        .badge.bg-info { background: rgba(56, 189, 248, 0.14) !important; color: #7dd3fc !important; }
+        .badge.bg-light { background: rgba(148, 163, 184, 0.12) !important; color: var(--text-color) !important; }
+        .badge.bg-dark { background: rgba(148, 163, 184, 0.1) !important; color: var(--muted-text) !important; }
+        .badge.bg-purple { background: rgba(167, 139, 250, 0.16) !important; color: #c4b5fd !important; }
+
+        .bg-purple { background-color: #8b5cf6 !important; }
+
+        /* ============ Buttons ============ */
+        .btn { border-radius: 0.6rem; font-weight: 500; transition: all 0.15s ease; }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            border: none;
+            box-shadow: 0 2px 10px -2px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background: linear-gradient(135deg, #5558e8 0%, #7c4ff0 100%);
+            box-shadow: 0 4px 16px -2px rgba(99, 102, 241, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active { transform: none; }
+
+        .btn-outline-primary { border-color: rgba(129, 140, 248, 0.4); color: #a5b4fc; }
+        .btn-outline-primary:hover { background: rgba(129, 140, 248, 0.12); border-color: #818cf8; color: #c7d2fe; }
+
+        .btn-outline-secondary { border-color: var(--border-color); color: var(--muted-text); }
+        .btn-outline-secondary:hover { background: var(--surface-hover); border-color: #3b4258; color: var(--text-color); }
+
+        .btn-action { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+
+        /* ============ Forms ============ */
+        .form-control, .form-select, textarea, input.search-input {
+            background-color: var(--surface-muted) !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            border-radius: 0.6rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: rgba(129, 140, 248, 0.55) !important;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.14) !important;
+        }
+
+        .form-control::placeholder { color: #5b6478; }
+
+        .search-input {
+            border-radius: 0.6rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .form-check-input { background-color: var(--surface-muted); border-color: #3b4258; }
+        .form-check-input:checked { background-color: var(--secondary-color); border-color: var(--secondary-color); }
+
+        /* ============ Page Header ============ */
+        .page-header { margin-bottom: 1.75rem; }
+
+        .page-header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .page-header .subtitle {
+            color: var(--muted-text);
+            font-size: 0.92rem;
+            margin-top: 0.3rem;
+            margin-bottom: 0;
+        }
+
+        /* ============ Misc components ============ */
+        .alert { border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+
+        .modal-content {
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-pop);
+        }
+
+        .dropdown-menu {
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-pop);
+            padding: 0.4rem;
+        }
+
+        .dropdown-item { border-radius: 0.45rem; padding: 0.45rem 0.75rem; font-size: 0.9rem; }
+        .dropdown-item:hover { background: var(--surface-hover); }
+
+        .pagination .page-link {
+            background: var(--surface-color);
+            border-color: var(--border-color);
+            color: var(--muted-text);
+            border-radius: 0.5rem;
+            margin: 0 2px;
+        }
+        .pagination .page-item.active .page-link {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        .list-group-item-action:hover { background-color: var(--surface-hover) !important; }
+
+        /* Dark theme fixes for light-mode leftovers */
+        [data-bs-theme=dark] .bg-light { background-color: var(--surface-muted) !important; }
+        [data-bs-theme=dark] .text-dark { color: var(--text-color) !important; }
+        [data-bs-theme=dark] .bg-white { background-color: var(--surface-color) !important; }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: none; box-shadow: var(--shadow-pop); }
+            .sidebar-toggle { display: flex; }
+            .sidebar-backdrop.show { display: block; }
+            .main-content { margin-left: 0; padding: 4.5rem 1rem 1.5rem; }
+        }
+
+        /* Spinning animation for scanning indicator */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin 2s linear infinite;
+            display: inline-block;
+        }
+
+        .text-muted {
+            color: var(--muted-text) !important;
+        }
+
+        .card,
+        .modal-content,
+        .dropdown-menu,
+        .list-group-item,
+        .leads-panel,
+        .composer-panel,
+        .panel-header,
+        .lead-item,
+        .composer-actions,
+        .email-to,
+        .analysis-panel,
+        .queue-display,
+        .batch-actions-bar {
+            background-color: var(--surface-color) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        .lead-item:hover,
+        .lead-item.active,
+        .lead-item.selected {
+            background-color: var(--surface-muted) !important;
+        }
+
+        .lead-name,
+        .lead-name a,
+        .stats-bar strong {
+            color: var(--text-color) !important;
+        }
+
+        .lead-meta,
+        .stats-bar {
+            color: var(--muted-text) !important;
+        }
+    </style>
+    
+    
+<style>
+    .email-manager-container {
+        display: flex;
+        height: calc(100vh - 100px);
+        gap: 1rem;
+    }
+    .leads-panel {
+        width: 45%;
+        display: flex;
+        flex-direction: column;
+        background: var(--surface-color);
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+        border: 1px solid var(--border-color);
+    }
+    .composer-panel {
+        width: 55%;
+        display: flex;
+        flex-direction: column;
+        background: var(--surface-color);
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+        border: 1px solid var(--border-color);
+    }
+    .panel-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        background: var(--surface-muted);
+    }
+    .panel-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0;
+    }
+    .lead-item {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-subtle);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .lead-item:hover { background: var(--surface-muted); }
+    .lead-item.active {
+        background: rgba(99, 102, 241, 0.12);
+        border-left: 3px solid var(--primary-color);
+    }
+    .lead-item.generated { border-left: 3px solid #22c55e; }
+    .lead-name { font-weight: 600; color: var(--text-color); margin-bottom: 0.25rem; }
+    .lead-meta { font-size: 0.8rem; color: var(--muted-text); }
+    .lead-badges { display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+    .lead-badges .badge { font-size: 0.7rem; font-weight: 500; }
+    .composer-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--muted-text);
+    }
+    .composer-empty i { font-size: 4rem; margin-bottom: 1rem; }
+    .email-form { padding: 1.5rem; height: 100%; display: flex; flex-direction: column; }
+    .email-to { padding: 0.75rem 1rem; background: var(--surface-muted); border-radius: 0.5rem; margin-bottom: 1rem; }
+    .email-subject input {
+        font-size: 1.1rem;
+        font-weight: 500;
+        border: none;
+        width: 100%;
+        padding: 0.5rem 0;
+        border-bottom: 2px solid var(--border-color);
+        background: transparent;
+        color: var(--text-color);
+    }
+    .email-subject input:focus { outline: none; border-bottom-color: var(--primary-color); }
+    .email-body { flex: 1; margin-top: 1rem; }
+    .email-body textarea {
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        resize: none;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        background: var(--surface-muted);
+        color: var(--text-color);
+    }
+    .email-body textarea:focus { outline: none; border-color: var(--primary-color); }
+    .composer-actions {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--border-color);
+        background: var(--surface-muted);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .analysis-panel { padding: 1rem; background: #1a1b24; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.85rem; border: 1px solid var(--border-color); }
+    .generating-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(2,6,23,0.85);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+    .filter-bar { display: flex; gap: 0.5rem; padding: 0.75rem 1rem; background: var(--surface-muted); border-bottom: 1px solid var(--border-color); }
+    .filter-bar input, .filter-bar select { font-size: 0.85rem; padding: 0.4rem 0.75rem; }
+    .stats-bar { display: flex; gap: 1rem; font-size: 0.85rem; color: var(--muted-text); }
+    .stats-bar strong { color: var(--text-color); }
+    .lead-item.generating { 
+        background: rgba(245, 158, 11, 0.16); 
+        border-left: 3px solid #f59e0b; 
+        animation: pulse 1.5s infinite; 
+    }
+    @keyframes pulse { 
+        0%, 100% { opacity: 1; } 
+        50% { opacity: 0.7; } 
+    }
+    .queue-display {
+        padding: 0.5rem 1rem;
+        background: rgba(245, 158, 11, 0.16);
+        border-bottom: 1px solid #f59e0b;
+        font-size: 0.85rem;
+        color: #fcd34d;
+        display: none;
+    }
+    .lead-name a { color: var(--text-color); }
+    .lead-name a:hover { color: var(--primary-color); text-decoration: underline !important; }
+    .lead-item.selected { background: rgba(14, 165, 233, 0.14); }
+    .lead-checkbox { cursor: pointer; }
+    .progress-log-panel {
+        background: #0b1220;
+        color: #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        font-family: monospace;
+        font-size: 0.75rem;
+        max-height: 120px;
+        overflow-y: auto;
+        margin-bottom: 1rem;
+    }
+    .progress-log-panel:empty { display: none; }
+
+    .generation-banner {
+        display: none;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        background: rgba(99, 102, 241, 0.12);
+    }
+    /* Send queue styles */
+    .send-queue-panel {
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        background: var(--surface-color);
+        overflow: hidden;
+    }
+    .send-queue-header {
+        padding: 0.75rem 1rem;
+        background: rgba(34, 197, 94, 0.10);
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+    .send-queue-header:hover { background: rgba(34, 197, 94, 0.18); }
+    .send-queue-body { padding: 0.75rem 1rem; max-height: 250px; overflow-y: auto; }
+    .sq-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.35rem 0;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.82rem;
+    }
+    .sq-item:last-child { border-bottom: none; }
+    .sq-stats { display: flex; gap: 1rem; font-size: 0.82rem; }
+    .sq-stats .stat-num { font-weight: 700; }
+</style>
+
+</head>
+<body>
+<script>
+/* Static demo shim: serve captured API JSON, disable mutating actions. */
+(function () {
+  var realFetch = window.fetch.bind(window);
+  function apiFile(path) {
+    var clean = path.split('?')[0].replace(/^\/api\//, '').replace(/\/$/, '');
+    return 'api/' + clean.replace(/\//g, '_') + '.json';
+  }
+  window.fetch = function (input, init) {
+    var url = (typeof input === 'string') ? input : (input && input.url) || '';
+    var method = ((init && init.method) || (input && input.method) || 'GET').toUpperCase();
+    if (/^https?:/.test(url) && url.indexOf(location.origin) !== 0) {
+      return realFetch(input, init); // external CDN/API calls pass through
+    }
+    if (url.indexOf('/api/') === 0 || url.indexOf('api/') === 0) {
+      if (method === 'GET') {
+        return realFetch(apiFile(url.replace(/^(?!\/)/, '/'))).then(function (r) {
+          if (r.ok) return r;
+          return new Response('{"success": true, "items": [], "leads": [], "drafts": []}',
+            { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }).catch(function () {
+          return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+        });
+      }
+      demoNotice();
+      return Promise.resolve(new Response('{"success": false, "error": "Static demo - actions are disabled"}',
+        { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    }
+    return realFetch(input, init);
+  };
+  function demoNotice() {
+    var n = document.getElementById('demo-notice-toast');
+    if (!n) {
+      n = document.createElement('div');
+      n.id = 'demo-notice-toast';
+      n.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:10px 18px;border-radius:8px;z-index:99999;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.35);transition:opacity .3s;';
+      n.textContent = 'This is a static demo \u2014 interactive actions are disabled.';
+      document.body.appendChild(n);
+    }
+    n.style.opacity = '1';
+    clearTimeout(n._t);
+    n._t = setTimeout(function () { n.style.opacity = '0'; }, 2500);
+  }
+  document.addEventListener('submit', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    demoNotice();
+  }, true);
+  document.addEventListener('DOMContentLoaded', function () {
+    var bar = document.createElement('div');
+    bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99998;background:#111827;color:#e5e7eb;padding:9px 16px;font:13px/1.4 Inter,system-ui,sans-serif;text-align:center;border-top:1px solid #374151;';
+    bar.innerHTML = '\u26A1 <strong>Static demo</strong> of the Business Radar dashboard with sample data \u2014 buttons and forms are disabled. ' +
+      '&nbsp;<a href="https://github.com/ketans7/business-radar" target="_blank" rel="noopener" style="color:#60a5fa;">View source code</a>' +
+      '&nbsp;\u00B7&nbsp; <a href="../index.html" style="color:#60a5fa;">\u2190 Back to resume</a>';
+    document.body.appendChild(bar);
+    document.body.style.paddingBottom = '52px';
+  });
+})();
+</script>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">
+        <i class="bi bi-list"></i>
+    </button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <span class="logo-mark"><i class="bi bi-radar"></i></span>
+            <span>Business Radar</span>
+        </div>
+
+        <div class="nav-section-label">Overview</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="index.html">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="stats.html">
+                    <i class="bi bi-graph-up"></i> Analytics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="map.html">
+                    <i class="bi bi-geo-alt-fill"></i> Map
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">Outreach</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="leads.html">
+                    <i class="bi bi-building"></i> Leads
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="email-manager.html">
+                    <i class="bi bi-envelope-paper-fill"></i> AI Email Manager
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="followups.html">
+                    <i class="bi bi-arrow-repeat"></i> Follow-ups
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="replies.html">
+                    <i class="bi bi-inbox"></i> Replies
+                    <span class="badge bg-primary rounded-pill ms-auto" id="navReplyBadge" style="display:none;font-size:0.65rem;"></span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">System</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="settings.html">
+                    <i class="bi bi-gear"></i> Settings
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <span class="status-dot"></span> System Active
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        
+            
+        
+        
+        
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h3 mb-0"><i class="bi bi-envelope-paper text-primary"></i> AI Email Manager</h1>
+        <p class="text-muted small mb-0">Generate personalized emails with Qwen3-VL:30b AI</p>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-outline-primary btn-sm" onclick="selectAllFiltered()" id="selectAllBtn" title="Select all visible leads">
+            <i class="bi bi-check2-square"></i> Select All
+        </button>
+        <button class="btn btn-primary" onclick="generateAllEmails()" id="generateAllBtn">
+            <i class="bi bi-magic"></i> Generate Filtered
+        </button>
+        <button class="btn btn-danger" onclick="stopGeneration()" id="stopGenBtn" style="display:none">
+            <i class="bi bi-stop-circle"></i> Stop & Clear Queue
+        </button>
+        <button class="btn btn-success" onclick="queueFilteredForSend()" id="sendAllBtn" disabled>
+            <i class="bi bi-send-fill"></i> Queue to Send (<span id="sendCount">0</span>)
+        </button>
+    </div>
+</div>
+
+<!-- Send Queue Panel -->
+<div class="send-queue-panel" id="sendQueuePanel" style="display:none;">
+    <div class="send-queue-header" onclick="toggleSendQueueBody()">
+        <div>
+            <strong><i class="bi bi-send-check text-success"></i> Send Queue</strong>
+            <span class="badge bg-success ms-2" id="sqSentToday">0</span>
+            <span class="text-muted small">/ <span id="sqDailyLimit">100</span> (24h)</span>
+            <span class="badge bg-warning ms-2" id="sqQueuedBadge" style="display:none;">0 queued</span>
+            <span class="badge bg-info ms-2" id="sqSendingBadge" style="display:none;">sending...</span>
+            <span class="badge bg-secondary ms-2" id="sqWindowBadge" style="display:none;"></span>
+        </div>
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-warning" onclick="event.stopPropagation(); pauseSendQueue()" id="sqPauseBtn" style="display:none;">
+                <i class="bi bi-pause-circle"></i> Pause
+            </button>
+            <button class="btn btn-outline-success" onclick="event.stopPropagation(); resumeSendQueue()" id="sqResumeBtn" style="display:none;">
+                <i class="bi bi-play-circle"></i> Resume
+            </button>
+            <button class="btn btn-outline-danger" onclick="event.stopPropagation(); clearSendQueue()" id="sqClearBtn" style="display:none;">
+                <i class="bi bi-trash"></i> Clear
+            </button>
+            <button class="btn btn-outline-secondary" onclick="event.stopPropagation(); toggleSendQueueBody()">
+                <i class="bi bi-chevron-down" id="sqChevron"></i>
+            </button>
+        </div>
+    </div>
+    <div class="send-queue-body" id="sendQueueBody" style="display:none;">
+        <div class="sq-stats mb-2">
+            <span><span class="stat-num text-success" id="sqSentCount">0</span> sent</span>
+            <span><span class="stat-num text-warning" id="sqQueuedCount">0</span> queued</span>
+            <span><span class="stat-num text-danger" id="sqFailedCount">0</span> failed</span>
+            <span><span class="stat-num text-info" id="sqRemainingCount">100</span> remaining</span>
+        </div>
+        <!-- Daily limit control + 24h window info -->
+        <div class="d-flex align-items-center gap-2 mb-2 px-1" style="flex-wrap:wrap;">
+            <label class="small text-muted mb-0">Today's limit:</label>
+            <input type="number" class="form-control form-control-sm" id="sqLimitInput" style="width:70px;" min="1" max="500" value="100" onchange="updateDailyLimit(this.value)">
+            <button class="btn btn-outline-secondary btn-sm" onclick="resetDailyLimit()" title="Reset to default (100)">
+                <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
+            <span class="small text-muted" id="sqWindowInfo"></span>
+        </div>
+        <div id="sendQueueItems"><span class="text-muted small">No items in queue</span></div>
+    </div>
+</div>
+
+<div id="generationBanner" class="generation-banner">
+    <div class="d-flex justify-content-between align-items-center gap-3">
+        <div>
+            <strong><i class="bi bi-cpu"></i> Generation Progress</strong>
+            <span class="text-muted small ms-2" id="generationBannerText">Idle</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <div class="small" id="generationBannerCounts"></div>
+            <button class="btn btn-danger btn-sm" onclick="stopGeneration()" id="bannerStopBtn" title="Stop generation and clear queue">
+                <i class="bi bi-stop-circle"></i> Stop
+            </button>
+        </div>
+    </div>
+    <div class="progress mt-2" style="height: 8px;">
+        <div id="generationBannerBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+    </div>
+</div>
+
+<div class="email-manager-container">
+    <div class="leads-panel">
+        <div class="panel-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-0"><i class="bi bi-list-ul"></i> Leads</h6>
+                <div class="stats-bar">
+                    <span><strong id="totalLeads">0</strong> total</span>
+                    <span><strong id="generatedCount">0</strong> ready</span>
+                    <span class="text-info"><strong id="sentCountStat">0</strong> sent</span>
+                </div>
+            </div>
+        </div>
+        <div class="filter-bar flex-wrap">
+            <input type="text" class="form-control form-control-sm" id="searchInput" placeholder="Search..." onkeyup="filterLeads()" style="width:120px;">
+            <select class="form-select form-select-sm" id="statusFilter" onchange="filterLeads()" style="width:auto;">
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="generated">Generated</option>
+                <option value="ready">Ready (not sent)</option>
+                <option value="sent">Sent</option>
+            </select>
+            <div class="dropdown" id="categoryDropdown" style="display:inline-block;">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" id="categoryDropdownBtn">
+                    All Categories
+                </button>
+                <div class="dropdown-menu p-2" style="min-width:220px; max-height:300px; overflow-y:auto;" id="categoryMenu">
+                    <div class="form-check mb-1">
+                        <input class="form-check-input" type="checkbox" id="cat_all" checked onchange="toggleAllCategories(this.checked)">
+                        <label class="form-check-label small" for="cat_all"><strong>All Categories</strong></label>
+                    </div>
+                    <hr class="my-1">
+                    <!-- populated dynamically -->
+                </div>
+            </div>
+            <select class="form-select form-select-sm" id="sortFilter" onchange="filterLeads()" style="width:auto;">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name">By Name</option>
+            </select>
+        </div>
+        <div class="batch-actions-bar" id="batchActionsBar" style="display:none; padding: 0.5rem 1rem; background: #e0f2fe; border-bottom: 1px solid #0ea5e9;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="small"><strong id="selectedCount">0</strong> selected</span>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-primary" onclick="generateSelectedEmails()"><i class="bi bi-magic"></i> Generate</button>
+                    <button class="btn btn-outline-secondary" onclick="clearSelection()"><i class="bi bi-x"></i> Clear</button>
+                </div>
+            </div>
+        </div>
+        <div class="queue-display" id="queueDisplay">
+            <i class="bi bi-clock"></i> Queue: <span id="queueCount">0</span> leads waiting
+        </div>
+        <div class="panel-body" id="leadsListContainer">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary"></div>
+                <p class="text-muted mt-2 small">Loading leads...</p>
+            </div>
+        </div>
+    </div>
+    <div class="composer-panel position-relative">
+        <div class="panel-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-0"><i class="bi bi-pencil-square"></i> Email Composer</h6>
+                <div id="composerStatus"></div>
+            </div>
+        </div>
+        <div class="panel-body" id="composerContainer">
+            <div class="composer-empty">
+                <i class="bi bi-envelope-open"></i>
+                <h5>Select a Lead</h5>
+                <p>Click on a lead to auto-generate an email</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+let allLeads = [];
+let generatedEmails = {};
+let selectedLeadId = null;
+let generatingLeadId = null;  // Track which lead is currently generating
+let emailQueue = [];  // Queue for pending email generation
+let selectedLeads = new Set();  // Track selected leads for batch operations
+let activeEventSource = null;
+let isQueueProcessing = false;
+let stopRequested = false;  // Flag to stop generation
+const EMAIL_MANAGER_STATE_KEY = 'emailManagerState.v1';
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadLeads();
+    // Always poll send queue on load to show 24h window status and daily limit
+    pollSendQueueStatus();
+    startSendQueuePolling();
+});
+
+function persistUiState() {
+    const state = {
+        selectedLeadId,
+        generatingLeadId,
+        emailQueue,
+        savedAt: Date.now()
+    };
+    localStorage.setItem(EMAIL_MANAGER_STATE_KEY, JSON.stringify(state));
+}
+
+function restoreUiState() {
+    try {
+        const raw = localStorage.getItem(EMAIL_MANAGER_STATE_KEY);
+        if (!raw) return;
+        const state = JSON.parse(raw);
+        selectedLeadId = state.selectedLeadId || null;
+        generatingLeadId = state.generatingLeadId || null;
+        emailQueue = Array.isArray(state.emailQueue) ? state.emailQueue : [];
+    } catch (e) {
+        selectedLeadId = null;
+        generatingLeadId = null;
+        emailQueue = [];
+    }
+}
+
+function updateGenerationBanner(message = 'Idle', percent = 0, activeCount = null) {
+    const banner = document.getElementById('generationBanner');
+    const text = document.getElementById('generationBannerText');
+    const bar = document.getElementById('generationBannerBar');
+    const counts = document.getElementById('generationBannerCounts');
+    const stopBtn = document.getElementById('stopGenBtn');
+    const resolvedActiveCount = activeCount === null ? (generatingLeadId ? 1 : 0) : activeCount;
+    const queuedCount = emailQueue.length;
+    const remaining = resolvedActiveCount + queuedCount;
+
+    // Show/hide the header stop button
+    if (stopBtn) stopBtn.style.display = remaining > 0 ? '' : 'none';
+
+    if (remaining <= 0) {
+        banner.style.display = 'none';
+        return;
+    }
+
+    banner.style.display = 'block';
+    text.textContent = message || 'Processing...';
+    bar.style.width = `${Math.max(0, Math.min(100, percent || 0))}%`;
+    counts.textContent = `${resolvedActiveCount} active • ${queuedCount} queued • ${remaining} to go`;
+}
+
+async function resumeGenerationState() {
+    try {
+        const response = await fetch('/api/email-manager/active-generations');
+        const data = await response.json();
+        const active = data.active || [];
+
+        if (active.length === 0) {
+            generatingLeadId = null;
+            persistUiState();
+            updateGenerationBanner('Idle', 0, 0);
+            return;
+        }
+
+        const activeLeadIds = active.map(item => item.lead_id);
+        if (!generatingLeadId || !activeLeadIds.includes(generatingLeadId)) {
+            generatingLeadId = activeLeadIds[0];
+        }
+
+        const status = active.find(item => item.lead_id === generatingLeadId) || active[0];
+        const lead = allLeads.find(l => l.id === generatingLeadId);
+        updateGenerationBanner(status.message || 'Processing...', status.percent || 0, active.length);
+
+        if (lead) {
+            showGeneratingState(lead, status.message || 'Processing...', status.percent || 0);
+            attachProgressStream(lead);
+        }
+
+        persistUiState();
+        renderLeadsList();
+    } catch (e) {
+        updateGenerationBanner('Reconnecting...', 0);
+    }
+}
+
+function attachProgressStream(lead) {
+    if (activeEventSource) {
+        activeEventSource.close();
+        activeEventSource = null;
+    }
+
+    activeEventSource = new EventSource(`/api/email-manager/progress/${lead.id}`);
+    activeEventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        const progressBar = document.getElementById('inlineProgress');
+        const progressLog = document.getElementById('inlineProgressLog');
+        if (progressBar && data.percent >= 0) {
+            progressBar.style.width = data.percent + '%';
+        }
+        if (progressLog && data.message) {
+            const colorClass = data.message.startsWith('✅') ? 'text-success' : 
+                              data.message.startsWith('❌') ? 'text-danger' : 
+                              data.message.startsWith('⚠️') ? 'text-warning' : 
+                              data.message.startsWith('💭') ? 'text-info' : 'text-info';
+            progressLog.innerHTML += `<div class="${colorClass}">${data.message}</div>`;
+            progressLog.scrollTop = progressLog.scrollHeight;
+        }
+        updateGenerationBanner(data.message || 'Processing...', data.percent || 0);
+        persistUiState();
+
+        if (data.percent >= 100 || data.message === 'No active generation') {
+            activeEventSource.close();
+            activeEventSource = null;
+            finalizeGenerationUi(lead.id);
+        }
+    };
+}
+
+async function hydrateLeadFromDraft(leadId, showAfterLoad = true) {
+    const draftRes = await fetch(`/api/email-manager/draft/${leadId}`);
+    const draftData = await draftRes.json();
+    if (!draftData?.draft) return null;
+
+    let parsedAnalysis = draftData.draft.parsed_analysis || {};
+    try {
+        if ((!parsedAnalysis || Object.keys(parsedAnalysis).length === 0) && draftData.draft.analysis && typeof draftData.draft.analysis === 'string') {
+            parsedAnalysis = JSON.parse(draftData.draft.analysis);
+        } else if ((!parsedAnalysis || Object.keys(parsedAnalysis).length === 0) && draftData.draft.analysis && typeof draftData.draft.analysis === 'object') {
+            parsedAnalysis = draftData.draft.analysis;
+        }
+    } catch (e) {
+        parsedAnalysis = parsedAnalysis || {};
+    }
+
+    generatedEmails[leadId] = {
+        success: true,
+        email: { subject: draftData.draft.subject || '', body: draftData.draft.body || '' },
+        analysis: parsedAnalysis,
+        screenshots_analyzed: draftData.draft.screenshots_used || 0,
+        from_history: true,
+        auto_saved: true,
+        sent: draftData.draft.status === 'sent',
+        sent_at: draftData.draft.sent_at || null
+    };
+
+    if (showAfterLoad && selectedLeadId === leadId) {
+        const lead = allLeads.find(l => l.id === leadId);
+        if (lead) showComposer(lead, generatedEmails[leadId]);
+    }
+
+    return generatedEmails[leadId];
+}
+
+async function finalizeGenerationUi(leadId) {
+    if (generatingLeadId === leadId) {
+        generatingLeadId = null;
+    }
+    persistUiState();
+    renderLeadsList();
+    updateQueueDisplay();
+
+    try {
+        await hydrateLeadFromDraft(leadId, true);
+        updateStats();
+    } catch (e) {
+        console.warn('Could not hydrate draft after completion:', e);
+    }
+
+}
+
+async function loadLeads() {
+    try {
+        restoreUiState();
+        const response = await fetch('/api/email-manager/leads');
+        const data = await response.json();
+        allLeads = data.leads;
+        document.getElementById('totalLeads').textContent = allLeads.length;
+        
+        // Load existing drafts
+        for (const lead of allLeads) {
+            try {
+                await hydrateLeadFromDraft(lead.id, false);
+            } catch (e) {}
+        }
+        renderLeadsList();
+        updateQueueDisplay();
+        populateCategoryFilter();
+        await resumeGenerationState();
+
+        if (!generatingLeadId && emailQueue.length > 0) {
+            processQueue();
+        }
+
+        if (selectedLeadId) {
+            const selectedLead = allLeads.find(l => l.id === selectedLeadId);
+            if (selectedLead && generatedEmails[selectedLeadId]) {
+                showComposer(selectedLead, generatedEmails[selectedLeadId]);
+            } else if (selectedLead && generatingLeadId === selectedLeadId) {
+                showGeneratingState(selectedLead);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading leads:', error);
+    }
+}
+
+let selectedCategories = new Set();  // empty = all
+
+function populateCategoryFilter() {
+    const categories = [...new Set(allLeads.map(l => l.category).filter(Boolean))].sort();
+    const menu = document.getElementById('categoryMenu');
+    // Keep the "All" checkbox + separator, append category checkboxes
+    const allCheckHtml = `
+        <div class="form-check mb-1">
+            <input class="form-check-input" type="checkbox" id="cat_all" checked onchange="toggleAllCategories(this.checked)">
+            <label class="form-check-label small" for="cat_all"><strong>All Categories</strong></label>
+        </div>
+        <hr class="my-1">
+    `;
+    const catHtml = categories.map(c => {
+        const safeId = 'cat_' + c.replace(/[^a-zA-Z0-9]/g, '_');
+        return `
+            <div class="form-check mb-1">
+                <input class="form-check-input cat-checkbox" type="checkbox" id="${safeId}" value="${c}" onchange="onCategoryCheckChange()">
+                <label class="form-check-label small" for="${safeId}">${c}</label>
+            </div>
+        `;
+    }).join('');
+    menu.innerHTML = allCheckHtml + catHtml;
+}
+
+function toggleAllCategories(checked) {
+    document.querySelectorAll('.cat-checkbox').forEach(cb => { cb.checked = false; });
+    selectedCategories.clear();
+    document.getElementById('cat_all').checked = true;
+    updateCategoryButtonLabel();
+    filterLeads();
+}
+
+function onCategoryCheckChange() {
+    const checked = [...document.querySelectorAll('.cat-checkbox:checked')].map(cb => cb.value);
+    selectedCategories = new Set(checked);
+    // Uncheck "All" if specific categories selected, check it if none selected
+    const allCheck = document.getElementById('cat_all');
+    if (checked.length === 0) {
+        allCheck.checked = true;
+    } else {
+        allCheck.checked = false;
+    }
+    updateCategoryButtonLabel();
+    filterLeads();
+}
+
+function updateCategoryButtonLabel() {
+    const btn = document.getElementById('categoryDropdownBtn');
+    if (selectedCategories.size === 0) {
+        btn.textContent = 'All Categories';
+    } else if (selectedCategories.size === 1) {
+        btn.textContent = [...selectedCategories][0];
+    } else {
+        btn.textContent = `${selectedCategories.size} Categories`;
+    }
+}
+
+function toggleLeadSelection(leadId) {
+    if (selectedLeads.has(leadId)) {
+        selectedLeads.delete(leadId);
+    } else {
+        selectedLeads.add(leadId);
+    }
+    updateBatchActionsBar();
+    renderLeadsList();
+}
+
+function updateBatchActionsBar() {
+    const bar = document.getElementById('batchActionsBar');
+    const count = document.getElementById('selectedCount');
+    if (selectedLeads.size > 0) {
+        bar.style.display = 'block';
+        count.textContent = selectedLeads.size;
+    } else {
+        bar.style.display = 'none';
+    }
+}
+
+function clearSelection() {
+    selectedLeads.clear();
+    updateBatchActionsBar();
+    renderLeadsList();
+}
+
+function generateSelectedEmails() {
+    const ids = Array.from(selectedLeads);
+    for (const id of ids) {
+        if (!generatedEmails[id] && !emailQueue.includes(id)) {
+            emailQueue.push(id);
+        }
+    }
+    updateQueueDisplay();
+    renderLeadsList();
+    persistUiState();
+    if (generatingLeadId === null) processQueue();
+    clearSelection();
+}
+
+function sendSelectedEmails() {
+    const ids = Array.from(selectedLeads).filter(id => generatedEmails[id]);
+    if (ids.length === 0) {
+        alert('No generated emails selected to send.');
+        return;
+    }
+    queueLeadsForSend(ids);
+}
+
+function renderLeadsList() {
+    const container = document.getElementById('leadsListContainer');
+    const filtered = getFilteredLeads();
+    
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-5">
+                <i class="bi bi-inbox" style="font-size: 2rem; color: var(--muted-text);"></i>
+                <p class="text-muted mt-2 small">No leads found</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = filtered.map(lead => {
+        const isGenerated = generatedEmails[lead.id];
+        const isSent = isGenerated && isGenerated.sent;
+        const isActive = selectedLeadId === lead.id;
+        const isGenerating = generatingLeadId === lead.id;
+        const isQueued = emailQueue.includes(lead.id);
+        return `
+            <div class="lead-item ${isActive ? 'active' : ''} ${isGenerated ? 'generated' : ''} ${isGenerating ? 'generating' : ''} ${selectedLeads.has(lead.id) ? 'selected' : ''}" onclick="selectLead(${lead.id})">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="checkbox" class="form-check-input lead-checkbox" onclick="event.stopPropagation(); toggleLeadSelection(${lead.id})" ${selectedLeads.has(lead.id) ? 'checked' : ''}>
+                        <div class="lead-name">
+                            <a href="lead_${lead.id}.html" target="_blank" onclick="event.stopPropagation();" class="text-decoration-none">${lead.business_name}</a>
+                        </div>
+                    </div>
+                    ${isGenerating ? '<span class="spinner-border spinner-border-sm text-primary"></span>' : ''}
+                    ${isQueued ? '<span class="badge bg-warning">Queued</span>' : ''}
+                    ${isSent ? '<span class="badge bg-info"><i class="bi bi-check2"></i> Sent</span>' : ''}
+                </div>
+                <div class="lead-meta">${lead.email || '<span class="text-danger">No email</span>'}</div>
+                <div class="lead-badges">
+                    <span class="badge bg-secondary">${lead.category || 'Unknown'}</span>
+                    <span class="badge bg-secondary">${lead.location || 'Unknown'}</span>
+                    ${lead.website ? '<span class="badge bg-info text-white"><i class="bi bi-globe"></i></span>' : ''}
+                    ${isGenerated ? '<span class="badge bg-success"><i class="bi bi-check"></i> Ready</span>' : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+    updateStats();
+}
+
+function getFilteredLeads() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const status = document.getElementById('statusFilter').value;
+    const sort = document.getElementById('sortFilter').value;
+    
+    let filtered = allLeads.filter(lead => {
+        if (!lead.email) return false;
+        if (search && !lead.business_name.toLowerCase().includes(search) && !lead.email.toLowerCase().includes(search)) return false;
+        if (status === 'pending' && generatedEmails[lead.id]) return false;
+        if (status === 'generated' && !generatedEmails[lead.id]) return false;
+        if (status === 'ready' && !(generatedEmails[lead.id] && !generatedEmails[lead.id].sent)) return false;
+        if (status === 'sent' && !(generatedEmails[lead.id] && generatedEmails[lead.id].sent)) return false;
+        // Multi-category filter
+        if (selectedCategories.size > 0 && !selectedCategories.has(lead.category)) return false;
+        return true;
+    });
+    
+    // Sort
+    if (sort === 'newest') filtered.sort((a, b) => (b.id || 0) - (a.id || 0));
+    else if (sort === 'oldest') filtered.sort((a, b) => (a.id || 0) - (b.id || 0));
+    else if (sort === 'name') filtered.sort((a, b) => a.business_name.localeCompare(b.business_name));
+    
+    return filtered;
+}
+
+function filterLeads() { renderLeadsList(); }
+
+function updateStats() {
+    const filtered = getFilteredLeads();
+    const generated = filtered.filter(l => generatedEmails[l.id]).length;
+    const unsent = filtered.filter(l => generatedEmails[l.id] && !generatedEmails[l.id].sent).length;
+    const sentCount = filtered.filter(l => generatedEmails[l.id] && generatedEmails[l.id].sent).length;
+    const totalGenerated = Object.keys(generatedEmails).length;
+    document.getElementById('generatedCount').textContent = generated;
+    document.getElementById('sendCount').textContent = unsent;
+    document.getElementById('sentCountStat').textContent = sentCount;
+    document.getElementById('sendAllBtn').disabled = unsent === 0;
+    
+    // Update button labels based on active filter
+    const genBtn = document.getElementById('generateAllBtn');
+    const sendBtn = document.getElementById('sendAllBtn');
+    if (selectedCategories.size === 1) {
+        const catName = [...selectedCategories][0];
+        genBtn.innerHTML = `<i class="bi bi-magic"></i> Generate "${catName}"`;
+        sendBtn.innerHTML = `<i class="bi bi-send-fill"></i> Queue to Send "${catName}" (<span id="sendCount">${unsent}</span>)`;
+    } else if (selectedCategories.size > 1) {
+        genBtn.innerHTML = `<i class="bi bi-magic"></i> Generate ${selectedCategories.size} Categories`;
+        sendBtn.innerHTML = `<i class="bi bi-send-fill"></i> Queue to Send ${selectedCategories.size} Categories (<span id="sendCount">${unsent}</span>)`;
+    } else {
+        genBtn.innerHTML = `<i class="bi bi-magic"></i> Generate All`;
+        sendBtn.innerHTML = `<i class="bi bi-send-fill"></i> Queue to Send (<span id="sendCount">${unsent}</span>)`;
+    }
+}
+
+function selectAllFiltered() {
+    const filtered = getFilteredLeads();
+    const allSelected = filtered.every(l => selectedLeads.has(l.id));
+    if (allSelected) {
+        // Deselect all
+        filtered.forEach(l => selectedLeads.delete(l.id));
+    } else {
+        filtered.forEach(l => selectedLeads.add(l.id));
+    }
+    updateBatchActionsBar();
+    renderLeadsList();
+}
+
+function sendFilteredEmails() {
+    queueFilteredForSend();
+}
+
+async function stopGeneration() {
+    // 1. Set local flag to prevent queue from continuing
+    stopRequested = true;
+
+    // 2. Clear the local queue immediately
+    emailQueue = [];
+
+    // 3. Close any active SSE event source
+    if (activeEventSource) {
+        activeEventSource.close();
+        activeEventSource = null;
+    }
+
+    // 4. Tell the server to abort the current generation
+    try {
+        await fetch('/api/email-manager/stop-generation', { method: 'POST' });
+    } catch (e) {
+        console.warn('Stop request failed:', e);
+    }
+
+    // 5. Reset local UI state
+    generatingLeadId = null;
+    isQueueProcessing = false;
+    persistUiState();
+    updateQueueDisplay();
+    updateGenerationBanner('Stopped', 0, 0);
+    renderLeadsList();
+
+    // 6. Show idle composer
+    const container = document.getElementById('composerContainer');
+    container.innerHTML = `
+        <div class="composer-empty">
+            <i class="bi bi-stop-circle text-danger" style="font-size: 2rem;"></i>
+            <h5>Generation Stopped</h5>
+            <p class="text-muted">Queue cleared. Select a lead to start again.</p>
+        </div>
+    `;
+
+    // 7. Reset stop flag after a brief delay so new generations can start
+    setTimeout(() => { stopRequested = false; }, 500);
+}
+
+function updateQueueDisplay() {
+    const queueDiv = document.getElementById('queueDisplay');
+    const totalToGo = emailQueue.length + (generatingLeadId ? 1 : 0);
+    if (emailQueue.length === 0) {
+        queueDiv.style.display = 'none';
+    } else {
+        queueDiv.style.display = 'block';
+        queueDiv.innerHTML = `<i class="bi bi-clock"></i> Queue: ${emailQueue.length} leads waiting`;
+    }
+    updateGenerationBanner(generatingLeadId ? 'Generating emails...' : 'Queued', 0, generatingLeadId ? 1 : 0);
+    if (totalToGo === 0) {
+        updateGenerationBanner('Idle', 0, 0);
+    }
+}
+
+async function selectLead(leadId) {
+    selectedLeadId = leadId;
+    persistUiState();
+    renderLeadsList();
+    const lead = allLeads.find(l => l.id === leadId);
+    if (!lead) return;
+    
+    // If already generated, just show it
+    if (generatedEmails[leadId]) {
+        showComposer(lead, generatedEmails[leadId]);
+        return;
+    }
+    
+    // If currently generating this lead, do nothing
+    if (generatingLeadId === leadId) {
+        return;
+    }
+    
+    // If generating another lead, add to queue
+    if (generatingLeadId !== null) {
+        if (!emailQueue.includes(leadId)) {
+            emailQueue.push(leadId);
+            updateQueueDisplay();
+            renderLeadsList();
+            persistUiState();
+        }
+        // Show message that it's queued
+        showQueuedMessage(lead);
+        return;
+    }
+    
+    // Start generating
+    await generateEmailForLead(lead);
+}
+
+function showQueuedMessage(lead) {
+    const container = document.getElementById('composerContainer');
+    container.innerHTML = `
+        <div class="composer-empty">
+            <i class="bi bi-clock text-warning"></i>
+            <h5>Queued</h5>
+            <p class="text-muted">Email for ${lead.business_name} is queued for generation</p>
+            <p class="small text-muted">Position in queue: ${emailQueue.indexOf(lead.id) + 1}</p>
+        </div>
+    `;
+}
+
+async function processQueue() {
+    if (isQueueProcessing || generatingLeadId !== null || emailQueue.length === 0) return;
+    if (stopRequested) { emailQueue = []; updateQueueDisplay(); return; }
+
+    isQueueProcessing = true;
+    try {
+        while (generatingLeadId === null && emailQueue.length > 0 && !stopRequested) {
+            const nextLeadId = emailQueue.shift();
+            updateQueueDisplay();
+            persistUiState();
+
+            const lead = allLeads.find(l => l.id === nextLeadId);
+            if (lead && !generatedEmails[nextLeadId]) {
+                await generateEmailForLead(lead);
+            }
+        }
+        // If stop was requested mid-loop, drain remaining queue
+        if (stopRequested) {
+            emailQueue = [];
+            updateQueueDisplay();
+        }
+    } finally {
+        isQueueProcessing = false;
+    }
+}
+
+async function generateEmailForLead(lead) {
+    if (generatingLeadId === lead.id) {
+        attachProgressStream(lead);
+        showGeneratingState(lead);
+        updateGenerationBanner('Resuming generation...', 0);
+        return;
+    }
+
+    generatingLeadId = lead.id;
+    selectedLeadId = lead.id;
+    persistUiState();
+    renderLeadsList();
+    
+    // Show inline progress in composer
+    showGeneratingState(lead);
+    
+    // Start listening for progress updates
+    attachProgressStream(lead);
+    
+    try {
+        const startTime = Date.now();
+        const response = await fetch('/api/email-manager/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ lead_id: lead.id })
+        });
+        const data = await response.json();
+        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+
+        if (response.status === 409 && data.in_progress) {
+            const activeLeadId = Number(data.active_lead_id || lead.id);
+
+            if (activeLeadId !== lead.id && !emailQueue.includes(lead.id)) {
+                emailQueue.push(lead.id);
+            }
+
+            generatingLeadId = activeLeadId;
+            persistUiState();
+            renderLeadsList();
+            updateQueueDisplay();
+
+            const activeLead = allLeads.find(l => l.id === activeLeadId);
+            if (activeLead) {
+                showGeneratingState(activeLead, 'Resuming active generation...', 0);
+                attachProgressStream(activeLead);
+            }
+
+            updateGenerationBanner('Resuming active generation...', 0, 1);
+            return;
+        }
+        
+        if (activeEventSource) {
+            activeEventSource.close();
+            activeEventSource = null;
+        }
+        
+        console.log('Generation response:', data);
+        
+        if (data.success) {
+            // Store in memory
+            generatedEmails[lead.id] = data;
+            
+            const logEl = document.getElementById('inlineProgressLog');
+            if (logEl) {
+                logEl.innerHTML += `<div class="text-success">✅ Email generated in ${duration}s</div>`;
+                if (data.screenshots_analyzed > 0) {
+                    logEl.innerHTML += `<div class="text-info">📸 Analyzed ${data.screenshots_analyzed} page(s): ${data.pages_captured?.join(', ') || ''}</div>`;
+                }
+            }
+            
+            generatedEmails[lead.id].auto_saved = true;
+            if (logEl) {
+                logEl.innerHTML += `<div class="text-success">💾 Email auto-saved</div>`;
+            }
+            
+            await new Promise(r => setTimeout(r, 800));
+            showComposer(lead, generatedEmails[lead.id]);  // Use updated data with auto_saved flag
+            renderLeadsList();
+            console.log(`Generated in ${duration}s`);
+            await finalizeGenerationUi(lead.id);
+        } else {
+            console.error('Generation failed:', data.error);
+            showError(data.error || 'Unknown error');
+        }
+    } catch (error) {
+        if (activeEventSource) {
+            activeEventSource.close();
+            activeEventSource = null;
+        }
+        console.error('Generation error:', error);
+        showError(error.message);
+    } finally {
+        if (generatingLeadId === lead.id) {
+            generatingLeadId = null;
+            persistUiState();
+            renderLeadsList();
+            updateQueueDisplay();
+        }
+        // Process next in queue
+        if (emailQueue.length > 0) {
+            processQueue();
+        }
+    }
+}
+
+function showGeneratingState(lead, statusMessage = null, statusPercent = 0) {
+    const container = document.getElementById('composerContainer');
+    container.innerHTML = `
+        <div class="email-form">
+            <div class="progress-log-panel" id="inlineProgressLog">
+                <div class="text-success">▶ ${statusMessage || `Starting analysis for ${lead.business_name}...`}</div>
+            </div>
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary mb-3"></div>
+                <h5>Generating Email for ${lead.business_name}</h5>
+                <div class="progress mx-auto" style="width: 300px; height: 8px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="inlineProgress" style="width: ${statusPercent || 0}%"></div>
+                </div>
+                <p class="text-muted small mt-2">Analyzing with Qwen3-VL:30b...</p>
+                ${emailQueue.length > 0 ? `<p class="small text-warning"><i class="bi bi-clock"></i> ${emailQueue.length} more in queue</p>` : ''}
+            </div>
+        </div>
+    `;
+}
+
+function showComposer(lead, emailData) {
+    console.log('showComposer called:', lead.business_name, emailData);
+    
+    if (!emailData) {
+        console.error('No email data provided to showComposer');
+        showError('Email data not available');
+        return;
+    }
+    
+    const container = document.getElementById('composerContainer');
+    let analysis = emailData.analysis || {};
+    const email = emailData.email || {};
+    
+    // Safely get subject and body
+    let emailSubject = email.subject || emailData.subject || '';
+    let emailBody = email.body || emailData.email_body || emailData.body || '';
+    
+    // Safety check: if email body looks like JSON, try to extract model JSON payload
+    const jsonIndicators = ['"analysis":', '"gaps":', '"priorities":', '"recommended_services":', '"strengths":'];
+    const bodyLooksLikeJson = jsonIndicators.some(indicator => emailBody.includes(indicator)) || 
+                              emailBody.trim().startsWith('{') || 
+                              emailBody.trim().startsWith('[');
+    
+    if (bodyLooksLikeJson) {
+        console.warn('Email body contains JSON, attempting JSON extraction');
+        let parsed = null;
+
+        try {
+            parsed = JSON.parse(emailBody);
+        } catch (e) {
+            const jsonMatch = emailBody.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try {
+                    parsed = JSON.parse(jsonMatch[0]);
+                } catch (e2) {
+                    parsed = null;
+                }
+            }
+        }
+
+        if (parsed) {
+            if (!analysis || Object.keys(analysis).length === 0) {
+                analysis = parsed.analysis || analysis;
+            }
+            if (parsed.email?.subject && !emailSubject) {
+                emailSubject = parsed.email.subject;
+            }
+            if (parsed.email?.body) {
+                emailBody = parsed.email.body;
+            } else if (parsed.email_body) {
+                emailBody = parsed.email_body;
+            } else if (parsed.body) {
+                emailBody = parsed.body;
+            }
+
+            if (!emailSubject && parsed.subject) {
+                emailSubject = parsed.subject;
+            }
+
+            if (parsed.error) {
+                showError(`Model returned constraint rejection: ${parsed.error}`);
+                return;
+            }
+        }
+
+        // If still invalid, force regenerate instead of injecting a non-compliant template
+        if (!emailBody || emailBody.trim().startsWith('{') || emailBody.trim().startsWith('[')) {
+            showError('AI returned malformed email content for this draft. Click Regenerate to produce a compliant email.');
+            return;
+        }
+    }
+
+    // Final safety: strip any remaining JSON artifacts that slipped through
+    const jsonLeakIndicators = ['"analysis":', '"gaps":', '"priorities":', '"recommended_services":', '"strengths":', '"business_research":', '"website_observations":', '"business_type_summary":'];
+    if (jsonLeakIndicators.some(ind => emailBody.includes(ind))) {
+        console.warn('Final safety: stripping JSON artifacts from email body');
+        // Try to salvage prose before the JSON block
+        const jsonStart = emailBody.search(/\{[\s]*"[a-z_]+":/);
+        if (jsonStart > 20) {
+            emailBody = emailBody.substring(0, jsonStart).trim();
+        } else {
+            // Remove JSON objects/arrays and keys
+            emailBody = emailBody.replace(/\{[\s\S]*?\}/g, '');
+            emailBody = emailBody.replace(/\[[\s\S]*?\]/g, '');
+            emailBody = emailBody.replace(/"[a-z_]+"\s*:/g, '');
+            emailBody = emailBody.replace(/[{}\[\]]/g, '');
+            emailBody = emailBody.replace(/\n{3,}/g, '\n\n').trim();
+        }
+    }
+
+    // Replace common AI placeholders in the body
+    emailBody = emailBody.replace(/\[\s*Owner\s*Name\s*\]/gi, lead.business_name + ' team');
+    emailBody = emailBody.replace(/\[\s*Contact\s*Name\s*\]/gi, lead.business_name + ' team');
+    emailBody = emailBody.replace(/\[\s*Business\s*Owner\s*\]/gi, lead.business_name + ' team');
+    emailBody = emailBody.replace(/\[\s*Recipient\s*Name\s*\]/gi, lead.business_name + ' team');
+    emailBody = emailBody.replace(/\[\s*First\s*Name\s*\]/gi, lead.business_name + ' team');
+    emailBody = emailBody.replace(/\[\s*Name\s*\]/gi, lead.business_name + ' team');
+    
+    // Build observations section
+    let observationsHtml = '';
+    if (analysis.website_observations?.length) {
+        observationsHtml += `
+            <div class="mb-2">
+                <small class="text-muted"><i class="bi bi-globe"></i> Website:</small>
+                <ul class="mb-0 ps-3" style="font-size: 0.75rem;">
+                    ${analysis.website_observations.slice(0, 2).map(o => `<li>${o}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+    if (analysis.social_media_observations?.length) {
+        observationsHtml += `
+            <div class="mb-2">
+                <small class="text-muted"><i class="bi bi-share"></i> Social Media:</small>
+                <ul class="mb-0 ps-3" style="font-size: 0.75rem;">
+                    ${analysis.social_media_observations.slice(0, 2).map(o => `<li>${o}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    // Screenshots badge and links
+    let screenshotsBadge = '';
+    let screenshotsHtml = '';
+    if (emailData.screenshots_analyzed > 0) {
+        screenshotsBadge = `<span class="badge bg-info ms-2"><i class="bi bi-camera"></i> ${emailData.screenshots_analyzed} pages analyzed</span>`;
+        
+        // Build links to analyzed pages
+        const pages = emailData.pages_captured || [];
+        if (pages.length > 0) {
+            const pageLinks = pages.map(page => {
+                let url = '';
+                let icon = 'bi-globe';
+                let label = page;
+                if (page === 'website' && lead.website) {
+                    url = lead.website;
+                    label = 'Website';
+                } else if (page === 'instagram' && lead.instagram) {
+                    url = lead.instagram;
+                    icon = 'bi-instagram';
+                    label = 'Instagram';
+                } else if (page === 'facebook' && lead.facebook) {
+                    url = lead.facebook;
+                    icon = 'bi-facebook';
+                    label = 'Facebook';
+                } else if (page === 'twitter' && lead.twitter) {
+                    url = lead.twitter;
+                    icon = 'bi-twitter';
+                    label = 'Twitter/X';
+                }
+                if (url) {
+                    return `<a href="${url}" target="_blank" class="badge bg-secondary text-light text-decoration-none me-1"><i class="bi ${icon}"></i> ${label}</a>`;
+                }
+                return `<span class="badge bg-secondary text-light me-1"><i class="bi ${icon}"></i> ${label}</span>`;
+            }).join('');
+            screenshotsHtml = `
+                <div class="mb-2">
+                    <small class="text-muted"><i class="bi bi-image"></i> Pages Analyzed:</small>
+                    <div class="mt-1">${pageLinks}</div>
+                </div>
+            `;
+        }
+    }
+    
+    // History badge
+    let historyBadge = '';
+    if (emailData.from_history) {
+        historyBadge = `<span class="badge bg-secondary ms-2"><i class="bi bi-clock-history"></i> From history</span>`;
+    }
+    
+    // Prompt badge
+    let promptBadge = '';
+    if (emailData.prompt_name) {
+        promptBadge = `<span class="badge bg-purple ms-2" style="background-color: #7c3aed !important;"><i class="bi bi-stars"></i> ${emailData.prompt_name}</span>`;
+    }
+    
+    container.innerHTML = `
+        <div class="email-form">
+            <div class="analysis-panel" style="max-height: 350px; overflow-y: auto;">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <strong><i class="bi bi-lightbulb"></i> AI Analysis</strong>
+                        ${screenshotsBadge}${historyBadge}${promptBadge}
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <a href="lead_${lead.id}.html" target="_blank" class="btn btn-outline-primary"><i class="bi bi-eye"></i> View Lead</a>
+                        <button class="btn btn-outline-secondary" onclick="regenerateEmail(${lead.id})">
+                            <i class="bi bi-arrow-clockwise"></i> Regenerate
+                        </button>
+                    </div>
+                </div>
+                ${screenshotsHtml}
+                ${observationsHtml}
+                
+                <!-- Strengths Section -->
+                ${(analysis.strengths && analysis.strengths.length > 0) ? `
+                <div class="mb-2">
+                    <small class="text-muted"><i class="bi bi-check-circle text-success"></i> Strengths:</small>
+                    <ul class="mb-0 ps-3" style="font-size: 0.8rem;">
+                        ${analysis.strengths.slice(0, 3).map(s => `<li class="text-success">${s}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                
+                <div class="row">
+                    <div class="col-6">
+                        <small class="text-muted"><i class="bi bi-exclamation-triangle text-warning"></i> Opportunities:</small>
+                        ${(analysis.gaps && analysis.gaps.length > 0) ? `
+                        <ul class="mb-0 ps-3" style="font-size: 0.8rem;">
+                            ${analysis.gaps.slice(0, 3).map(g => `<li>${g}</li>`).join('')}
+                        </ul>
+                        ` : `<p class="text-muted small mb-0 mt-1"><em>Click "Regenerate" to analyze this lead</em></p>`}
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted"><i class="bi bi-rocket"></i> Recommended:</small>
+                        ${(emailData.recommended_services && emailData.recommended_services.length > 0) ? 
+                        `<div>${emailData.recommended_services.map(s => `<span class="badge bg-primary me-1 mb-1">${s}</span>`).join('')}</div>` :
+                        `<p class="text-muted small mb-0 mt-1"><em>AI voice assistant, AI chatbot</em></p>`}
+                        
+                        <!-- Social Metrics if available -->
+                        ${(analysis.social_metrics?.instagram?.followers || analysis.social_metrics?.instagram?.avg_likes) ? `
+                        <div class="mt-2">
+                            <small class="text-muted d-block"><i class="bi bi-instagram"></i> IG Metrics:</small>
+                            <small class="text-muted">
+                                ${analysis.social_metrics.instagram.followers ? `<span class="badge bg-secondary">${analysis.social_metrics.instagram.followers} followers</span>` : ''}
+                                ${analysis.social_metrics.instagram.avg_likes ? `<span class="badge bg-secondary">${analysis.social_metrics.instagram.avg_likes} avg likes</span>` : ''}
+                            </small>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <!-- Reasoning -->
+                ${emailData.reasoning ? `
+                <div class="mt-2 pt-2 border-top">
+                    <small class="text-muted"><i class="bi bi-lightbulb"></i> Strategy: ${emailData.reasoning}</small>
+                </div>
+                ` : ''}
+            </div>
+            <div class="email-to">
+                <small class="text-muted">To:</small>
+                <a href="lead_${lead.id}.html" target="_blank" class="text-decoration-none fw-bold">${lead.business_name}</a> &lt;${lead.email}&gt;
+            </div>
+            <div class="email-subject">
+                <input type="text" id="emailSubject" value="${emailSubject.replace(/"/g, '&quot;')}" placeholder="Subject line...">
+            </div>
+            <div class="email-body">
+                <textarea id="emailBody" placeholder="Email content...">${emailBody}</textarea>
+            </div>
+        </div>
+        <div class="composer-actions">
+            <small class="text-muted">
+                <i class="bi bi-robot"></i> Generated by Qwen3-VL:30b AI
+                <span class="ms-2 text-success" id="savedIndicator" style="display: ${emailData.from_history || emailData.auto_saved ? 'inline' : 'none'};">
+                    <i class="bi bi-check-circle"></i> Saved
+                </span>
+            </small>
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary" onclick="copyEmail()"><i class="bi bi-clipboard"></i> Copy</button>
+                <button class="btn btn-outline-primary" onclick="saveEmail(${lead.id})"><i class="bi bi-save"></i> Save</button>
+                <button class="btn btn-success" onclick="queueSingleEmail(${lead.id})"><i class="bi bi-send"></i> Queue to Send</button>
+            </div>
+        </div>
+    `;
+    
+    // Mark as auto-saved if this was a fresh generation
+    if (emailData.auto_saved) {
+        document.getElementById('savedIndicator').style.display = 'inline';
+    }
+}
+
+function showError(message) {
+    const container = document.getElementById('composerContainer');
+    container.innerHTML = `
+        <div class="composer-empty">
+            <i class="bi bi-exclamation-circle text-danger"></i>
+            <h5>Generation Failed</h5>
+            <p class="text-muted">${message}</p>
+            <button class="btn btn-primary" onclick="selectLead(${selectedLeadId})">
+                <i class="bi bi-arrow-clockwise"></i> Try Again
+            </button>
+        </div>
+    `;
+}
+
+async function regenerateEmail(leadId) {
+    delete generatedEmails[leadId];
+    persistUiState();
+    const lead = allLeads.find(l => l.id === leadId);
+    if (lead) await generateEmailForLead(lead);
+}
+
+async function saveEmail(leadId) {
+    const subject = document.getElementById('emailSubject').value;
+    const body = document.getElementById('emailBody').value;
+    const analysis = generatedEmails[leadId]?.analysis || {};
+    
+    if (!subject || !body) {
+        alert('Subject and body are required');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/email-manager/save-draft', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                lead_id: leadId, 
+                subject: subject, 
+                body: body,
+                analysis: JSON.stringify(analysis),
+                screenshots_used: generatedEmails[leadId]?.screenshots_analyzed || 0
+            })
+        });
+        const data = await response.json();
+        if (data.success) {
+            // Update local copy too
+            if (generatedEmails[leadId]) {
+                generatedEmails[leadId].email = { subject, body };
+                generatedEmails[leadId].auto_saved = true;
+            }
+            // Show saved indicator
+            const indicator = document.getElementById('savedIndicator');
+            if (indicator) indicator.style.display = 'inline';
+            // Brief visual feedback
+            const saveBtn = event?.target?.closest('button');
+            if (saveBtn) {
+                const origText = saveBtn.innerHTML;
+                saveBtn.innerHTML = '<i class="bi bi-check"></i> Saved!';
+                saveBtn.classList.add('btn-success');
+                saveBtn.classList.remove('btn-outline-primary');
+                setTimeout(() => {
+                    saveBtn.innerHTML = origText;
+                    saveBtn.classList.remove('btn-success');
+                    saveBtn.classList.add('btn-outline-primary');
+                }, 1500);
+            }
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Save error:', error);
+        alert('Error saving: ' + error.message);
+    }
+}
+
+async function generateAllEmails() {
+    const pending = getFilteredLeads().filter(l => !generatedEmails[l.id]);
+    if (pending.length === 0) { alert('All emails already generated!'); return; }
+    
+    // Add all to queue
+    for (const lead of pending) {
+        if (!emailQueue.includes(lead.id)) {
+            emailQueue.push(lead.id);
+        }
+    }
+    updateQueueDisplay();
+    renderLeadsList();
+    persistUiState();
+    
+    // Start processing if not already
+    if (generatingLeadId === null) {
+        processQueue();
+    }
+}
+
+function copyEmail() {
+    const subject = document.getElementById('emailSubject').value;
+    const body = document.getElementById('emailBody').value;
+    navigator.clipboard.writeText(`Subject: ${subject}\n\n${body}`);
+    alert('Email copied to clipboard!');
+}
+
+async function sendEmail(leadId) {
+    // Legacy: redirect to queue
+    await queueSingleEmail(leadId);
+}
+
+// ══════════════════════════════════════════════════════════════
+// SEND QUEUE – rate-limited frontend helpers
+// ══════════════════════════════════════════════════════════════
+let sendQueuePollTimer = null;
+let sendQueueExpanded = false;
+
+async function queueSingleEmail(leadId) {
+    const subject = document.getElementById('emailSubject')?.value || '';
+    const body = document.getElementById('emailBody')?.value || '';
+
+    if (!subject.trim() || !body.trim()) {
+        alert('Subject and body are required before sending.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/send-queue/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ lead_ids: [leadId], subject, body })
+        });
+        const data = await response.json();
+        if (!data.success) {
+            alert(data.error || 'Failed to queue email');
+            return;
+        }
+        // Mark as queued in UI
+        if (generatedEmails[leadId]) {
+            generatedEmails[leadId].queued = true;
+        }
+        renderLeadsList();
+        startSendQueuePolling();
+        alert(`Email queued for sending (${data.queue_size} in queue). Sending 1 every 2-5 minutes.`);
+    } catch (error) {
+        alert('Error queuing email: ' + error.message);
+    }
+}
+
+async function queueLeadsForSend(leadIds) {
+    if (leadIds.length === 0) return;
+    if (!confirm(`Queue ${leadIds.length} email(s) for rate-limited sending? (1 every 2-5 min)`)) return;
+
+    try {
+        const response = await fetch('/api/send-queue/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ lead_ids: leadIds })
+        });
+        const data = await response.json();
+        if (!data.success) {
+            alert(data.error || 'Failed to queue emails');
+            return;
+        }
+        leadIds.forEach(id => {
+            if (generatedEmails[id]) generatedEmails[id].queued = true;
+        });
+        renderLeadsList();
+        startSendQueuePolling();
+        alert(`${data.added} email(s) queued. ${data.skipped} skipped. Queue size: ${data.queue_size}`);
+    } catch (error) {
+        alert('Error queuing emails: ' + error.message);
+    }
+}
+
+function queueFilteredForSend() {
+    const filtered = getFilteredLeads();
+    const ids = filtered.filter(l => generatedEmails[l.id] && !generatedEmails[l.id].sent).map(l => l.id);
+    if (ids.length === 0) {
+        alert('No generated emails available to send in the current filter.');
+        return;
+    }
+    queueLeadsForSend(ids);
+}
+
+function queueSelectedForSend() {
+    const ids = Array.from(selectedLeads).filter(id => generatedEmails[id] && !generatedEmails[id].sent);
+    if (ids.length === 0) {
+        alert('No generated emails selected to queue.');
+        return;
+    }
+    queueLeadsForSend(ids);
+}
+
+function startSendQueuePolling() {
+    if (sendQueuePollTimer) return;
+    pollSendQueueStatus();
+    sendQueuePollTimer = setInterval(pollSendQueueStatus, 10000); // every 10s
+}
+
+function stopSendQueuePolling() {
+    if (sendQueuePollTimer) {
+        clearInterval(sendQueuePollTimer);
+        sendQueuePollTimer = null;
+    }
+}
+
+async function pollSendQueueStatus() {
+    try {
+        const response = await fetch('/api/send-queue/status');
+        const data = await response.json();
+        if (!data.success) return;
+
+        const panel = document.getElementById('sendQueuePanel');
+        const q = data.queue;
+        const hasActivity = q.queued > 0 || q.sending > 0 || q.sent > 0 || q.failed > 0 || data.sent_today > 0;
+
+        // Show/hide panel
+        panel.style.display = hasActivity ? 'block' : 'none';
+
+        // Update badges/stats
+        document.getElementById('sqSentToday').textContent = data.sent_today;
+        document.getElementById('sqDailyLimit').textContent = data.daily_limit;
+        document.getElementById('sqSentCount').textContent = q.sent;
+        document.getElementById('sqQueuedCount').textContent = q.queued;
+        document.getElementById('sqFailedCount').textContent = q.failed;
+        document.getElementById('sqRemainingCount').textContent = data.remaining_today;
+
+        // Update daily limit input (only if user isn't focused on it)
+        const limitInput = document.getElementById('sqLimitInput');
+        if (limitInput && document.activeElement !== limitInput) {
+            limitInput.value = data.daily_limit;
+        }
+
+        // 24h window info
+        const windowBadge = document.getElementById('sqWindowBadge');
+        const windowInfo = document.getElementById('sqWindowInfo');
+        if (data.window && data.window.seconds_remaining > 0 && !data.window.is_open) {
+            const hrs = Math.floor(data.window.seconds_remaining / 3600);
+            const mins = Math.floor((data.window.seconds_remaining % 3600) / 60);
+            windowBadge.style.display = '';
+            windowBadge.textContent = `Resets in ${hrs}h ${mins}m`;
+            windowBadge.className = data.remaining_today <= 0 ? 'badge bg-danger ms-2' : 'badge bg-secondary ms-2';
+            if (windowInfo) {
+                const startTime = data.window.start ? new Date(data.window.start).toLocaleString() : '—';
+                windowInfo.innerHTML = `<i class="bi bi-clock-history"></i> Window started: ${startTime} · Resets in ${hrs}h ${mins}m`;
+            }
+        } else {
+            windowBadge.style.display = 'none';
+            if (windowInfo) windowInfo.innerHTML = data.sent_today > 0 ? '<i class="bi bi-check-circle text-success"></i> 24h window open — ready to send' : '';
+        }
+
+        const queuedBadge = document.getElementById('sqQueuedBadge');
+        const sendingBadge = document.getElementById('sqSendingBadge');
+        queuedBadge.style.display = q.queued > 0 ? '' : 'none';
+        queuedBadge.textContent = `${q.queued} queued`;
+        sendingBadge.style.display = q.sending > 0 ? '' : 'none';
+
+        // Show/hide control buttons
+        document.getElementById('sqPauseBtn').style.display = (q.queued > 0 || q.sending > 0) ? '' : 'none';
+        document.getElementById('sqResumeBtn').style.display = 'none'; // shown after pause
+        document.getElementById('sqClearBtn').style.display = hasActivity ? '' : 'none';
+
+        // Update items list
+        const itemsDiv = document.getElementById('sendQueueItems');
+        if (data.items && data.items.length > 0) {
+            itemsDiv.innerHTML = data.items.map(item => {
+                let statusBadge = '';
+                switch(item.status) {
+                    case 'queued': statusBadge = '<span class="badge bg-warning">Queued</span>'; break;
+                    case 'sending': statusBadge = '<span class="badge bg-info"><i class="bi bi-hourglass-split"></i> Sending</span>'; break;
+                    case 'sent': statusBadge = '<span class="badge bg-success"><i class="bi bi-check2"></i> Sent</span>'; break;
+                    case 'failed': statusBadge = `<span class="badge bg-danger" title="${item.error || ''}">Failed</span>`; break;
+                    case 'daily_limit': statusBadge = '<span class="badge bg-secondary">Limit</span>'; break;
+                }
+                let etaText = '';
+                if (item.status === 'queued' && item.eta_seconds) {
+                    const mins = Math.ceil(item.eta_seconds / 60);
+                    etaText = `<span class="text-muted small ms-2">~${mins}min</span>`;
+                }
+                let timeText = '';
+                if (item.sent_at) {
+                    const d = new Date(item.sent_at);
+                    timeText = `<span class="text-muted small">${d.toLocaleTimeString()}</span>`;
+                }
+                return `<div class="sq-item">
+                    <span>${item.business_name || 'Lead #' + item.lead_id} ${etaText}</span>
+                    <span>${statusBadge} ${timeText}</span>
+                </div>`;
+            }).join('');
+        } else {
+            itemsDiv.innerHTML = '<span class="text-muted small">No items in queue</span>';
+        }
+
+        // Mark sent leads in the leads list
+        if (data.items) {
+            for (const item of data.items) {
+                if (item.status === 'sent' && generatedEmails[item.lead_id]) {
+                    generatedEmails[item.lead_id].sent = true;
+                }
+            }
+            renderLeadsList();
+        }
+
+        // Stop polling when queue is empty
+        if (q.queued === 0 && q.sending === 0) {
+            setTimeout(() => {
+                if (q.queued === 0 && q.sending === 0) {
+                    // Don't stop immediately — let it continue for status display
+                }
+            }, 30000);
+        }
+    } catch (e) {
+        console.warn('Send queue poll error:', e);
+    }
+}
+
+async function updateDailyLimit(val) {
+    const num = parseInt(val, 10);
+    if (isNaN(num) || num < 1 || num > 500) {
+        alert('Limit must be between 1 and 500');
+        return;
+    }
+    try {
+        const res = await fetch('/api/send-queue/set-limit', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({limit: num})
+        });
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('sqDailyLimit').textContent = data.daily_limit;
+        }
+    } catch (e) {
+        console.warn('Failed to update limit:', e);
+    }
+}
+
+async function resetDailyLimit() {
+    try {
+        const res = await fetch('/api/send-queue/reset-limit', {method: 'POST'});
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('sqLimitInput').value = data.daily_limit;
+            document.getElementById('sqDailyLimit').textContent = data.daily_limit;
+        }
+    } catch (e) {
+        console.warn('Failed to reset limit:', e);
+    }
+}
+
+function toggleSendQueueBody() {
+    sendQueueExpanded = !sendQueueExpanded;
+    document.getElementById('sendQueueBody').style.display = sendQueueExpanded ? 'block' : 'none';
+    document.getElementById('sqChevron').className = sendQueueExpanded ? 'bi bi-chevron-up' : 'bi bi-chevron-down';
+}
+
+async function pauseSendQueue() {
+    try {
+        await fetch('/api/send-queue/stop', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ clear: false }) });
+        document.getElementById('sqPauseBtn').style.display = 'none';
+        document.getElementById('sqResumeBtn').style.display = '';
+    } catch (e) { console.warn('Pause failed:', e); }
+}
+
+async function resumeSendQueue() {
+    try {
+        await fetch('/api/send-queue/resume', { method: 'POST' });
+        document.getElementById('sqResumeBtn').style.display = 'none';
+        document.getElementById('sqPauseBtn').style.display = '';
+    } catch (e) { console.warn('Resume failed:', e); }
+}
+
+async function clearSendQueue() {
+    if (!confirm('Clear all items from the send queue?')) return;
+    try {
+        await fetch('/api/send-queue/clear', { method: 'POST' });
+        pollSendQueueStatus();
+    } catch (e) { console.warn('Clear failed:', e); }
+}
+
+async function sendBatch(leadIds) {
+    // Redirect batch to queue
+    await queueLeadsForSend(leadIds);
+}
+
+async function sendAllEmails() {
+    queueFilteredForSend();
+}
+
+// Start polling on page load if there are items
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        fetch('/api/send-queue/status').then(r => r.json()).then(data => {
+            if (data.success && (data.queue.queued > 0 || data.queue.sending > 0 || data.queue.sent > 0 || data.queue.failed > 0)) {
+                startSendQueuePolling();
+            }
+        }).catch(() => {});
+    }, 2000);
+});
+</script>
+
+    </main>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    // Global unread reply badge updater
+    (function(){
+        async function updateNavReplyBadge(){
+            try {
+                const res = await fetch('/api/replies/unread-count');
+                const data = await res.json();
+                const badge = document.getElementById('navReplyBadge');
+                if(badge && data.success){
+                    badge.textContent = data.count;
+                    badge.style.display = data.count > 0 ? 'inline-block' : 'none';
+                }
+            } catch(e){}
+        }
+        updateNavReplyBadge();
+        setInterval(updateNavReplyBadge, 60000);
+    })();
+
+    // Mobile sidebar toggle
+    (function(){
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('sidebarToggle');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        function close(){ sidebar.classList.remove('open'); backdrop.classList.remove('show'); }
+        toggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            backdrop.classList.toggle('show', sidebar.classList.contains('open'));
+        });
+        backdrop.addEventListener('click', close);
+        sidebar.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', close));
+    })();
+    </script>
+    
+    
+</body>
+</html>

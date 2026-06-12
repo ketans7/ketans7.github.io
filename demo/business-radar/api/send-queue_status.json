@@ -1,0 +1,21 @@
+{
+  "daily_limit": 100,
+  "items": [],
+  "log": [],
+  "queue": {
+    "daily_limited": 0,
+    "failed": 0,
+    "queued": 0,
+    "sending": 0,
+    "sent": 0
+  },
+  "remaining_today": 83,
+  "sent_today": 17,
+  "success": true,
+  "window": {
+    "end": "2026-06-13T22:12:12.993449",
+    "is_open": false,
+    "seconds_remaining": 85671,
+    "start": "2026-06-12T22:12:12.993449"
+  }
+}

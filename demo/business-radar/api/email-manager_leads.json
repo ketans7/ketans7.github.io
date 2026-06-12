@@ -1,0 +1,123 @@
+{
+  "categories": [
+    "clinic",
+    "dentist",
+    "estate agent",
+    "event venue",
+    "gym",
+    "hotel",
+    "restaurant",
+    "salon",
+    "spa"
+  ],
+  "leads": [
+    {
+      "address": "12 Camden High St, London NW1 0JH",
+      "business_name": "The Brass Fork",
+      "category": "restaurant",
+      "description": "Modern British restaurant in Camden with seasonal menus.",
+      "email": "hello@thebrassfork.co.uk",
+      "facebook": null,
+      "id": 1,
+      "instagram": null,
+      "linkedin": null,
+      "location": "London",
+      "phone": "+44 20 7946 0321",
+      "twitter": null,
+      "website": "https://thebrassfork.co.uk"
+    },
+    {
+      "address": "Unit 7, Hackney Wick, London E9 5EN",
+      "business_name": "Ironworks Gym",
+      "category": "gym",
+      "description": "Independent strength and conditioning gym in Hackney Wick.",
+      "email": "team@ironworksgym.co.uk",
+      "facebook": null,
+      "id": 4,
+      "instagram": null,
+      "linkedin": null,
+      "location": "London",
+      "phone": "+44 20 7946 0877",
+      "twitter": null,
+      "website": "https://ironworksgym.co.uk"
+    },
+    {
+      "address": "5 Marylebone Ln, London W1U 2NA",
+      "business_name": "Serenity Day Spa",
+      "category": "spa",
+      "description": "Day spa offering massage, facials and wellness packages.",
+      "email": "relax@serenitydayspa.co.uk",
+      "facebook": null,
+      "id": 8,
+      "instagram": null,
+      "linkedin": null,
+      "location": "London",
+      "phone": "+44 20 7946 0911",
+      "twitter": null,
+      "website": "https://serenitydayspa.co.uk"
+    },
+    {
+      "address": "118 Borough High St, London SE1 1LB",
+      "business_name": "Crown & Anchor Gastropub",
+      "category": "restaurant",
+      "description": "Traditional gastropub with private dining near Borough Market.",
+      "email": "events@crownanchorpub.co.uk",
+      "facebook": null,
+      "id": 12,
+      "instagram": null,
+      "linkedin": null,
+      "location": "London",
+      "phone": "+44 20 7946 0588",
+      "twitter": null,
+      "website": "https://crownanchorpub.co.uk"
+    },
+    {
+      "address": "89 Kensington Gardens Sq, London W2 4BB",
+      "business_name": "The Willow Hotel",
+      "category": "hotel",
+      "description": "Boutique 28-room hotel near Kensington Gardens.",
+      "email": "reservations@willowhotel.co.uk",
+      "facebook": null,
+      "id": 5,
+      "instagram": null,
+      "linkedin": null,
+      "location": "London",
+      "phone": "+44 20 7946 0244",
+      "twitter": null,
+      "website": "https://willowhotel.co.uk"
+    },
+    {
+      "address": "Arch 12, Bermondsey St, London SE1 3UW",
+      "business_name": "Vault Events Space",
+      "category": "event venue",
+      "description": "Converted railway arch venue for weddings and corporate events.",
+      "email": "hire@vaultevents.co.uk",
+      "facebook": null,
+      "id": 7,
+      "instagram": null,
+      "linkedin": null,
+      "location": "London",
+      "phone": "+44 20 7946 0699",
+      "twitter": null,
+      "website": "https://vaultevents.co.uk"
+    },
+    {
+      "address": "14 Broadway Market, London E8 4QJ",
+      "business_name": "Greenhouse Coffee Roasters",
+      "category": "restaurant",
+      "description": "Specialty coffee roastery and brunch spot on Broadway Market.",
+      "email": "hey@greenhousecoffee.co.uk",
+      "facebook": null,
+      "id": 10,
+      "instagram": null,
+      "linkedin": null,
+      "location": "London",
+      "phone": "+44 20 7946 0766",
+      "twitter": null,
+      "website": "https://greenhousecoffee.co.uk"
+    }
+  ],
+  "locations": [
+    "London"
+  ]
+}

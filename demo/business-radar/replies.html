@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Replies - Business Radar</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #818cf8;
+            --secondary-color: #6366f1;
+            --accent-violet: #a78bfa;
+            --success-color: #34d399;
+            --warning-color: #fbbf24;
+            --danger-color: #f87171;
+            --info-color: #38bdf8;
+            --dark-color: #0f172a;
+            --light-bg: #090b11;
+            --surface-color: #11141d;
+            --surface-muted: #181c28;
+            --surface-hover: #1d2230;
+            --border-color: #232838;
+            --border-subtle: rgba(148, 163, 184, 0.09);
+            --text-color: #e7eaf2;
+            --muted-text: #8c94a8;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px -12px rgba(0,0,0,0.5);
+            --shadow-pop: 0 12px 32px -8px rgba(0,0,0,0.6);
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --sidebar-width: 256px;
+        }
+
+        * { scrollbar-width: thin; scrollbar-color: #2b3247 transparent; }
+        ::-webkit-scrollbar { width: 9px; height: 9px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2b3247; border-radius: 99px; border: 2px solid transparent; background-clip: content-box; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b4258; border: 2px solid transparent; background-clip: content-box; }
+
+        ::selection { background: rgba(129, 140, 248, 0.35); }
+
+        body {
+            background-color: var(--light-bg);
+            background-image:
+                radial-gradient(1100px 480px at 85% -10%, rgba(99, 102, 241, 0.07), transparent 60%),
+                radial-gradient(900px 420px at -10% 100%, rgba(139, 92, 246, 0.05), transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-feature-settings: 'cv02', 'cv03', 'cv11';
+            letter-spacing: -0.011em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 { letter-spacing: -0.02em; }
+
+        /* ============ Sidebar ============ */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            background: rgba(13, 16, 24, 0.85);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border-subtle);
+            padding: 1.5rem 1rem;
+            z-index: 1000;
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar .logo {
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.75rem;
+            padding: 0 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .sidebar .logo .logo-mark {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 14px -4px rgba(99, 102, 241, 0.55);
+        }
+
+        .sidebar .nav-section-label {
+            font-size: 0.66rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: #5b6478;
+            padding: 0 0.85rem;
+            margin: 1.1rem 0 0.4rem;
+        }
+
+        .sidebar .nav-link {
+            color: #9aa3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.6rem 0.85rem;
+            border-radius: 0.6rem;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(148, 163, 184, 0.07);
+            color: #e7eaf2;
+        }
+
+        .sidebar .nav-link.active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.16), rgba(139, 92, 246, 0.07));
+            color: #c7d2fe;
+        }
+
+        .sidebar .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 18px;
+            border-radius: 99px;
+            background: var(--accent-gradient);
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.7rem;
+            width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .sidebar .sidebar-footer {
+            margin-top: auto;
+            padding: 0.85rem;
+            border-radius: var(--radius-md);
+            background: rgba(148, 163, 184, 0.05);
+            border: 1px solid var(--border-subtle);
+            font-size: 0.78rem;
+            color: var(--muted-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.18);
+            animation: pulse-dot 2.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.18); }
+            50% { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.07); }
+        }
+
+        /* Mobile toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1050;
+            width: 42px;
+            height: 42px;
+            border-radius: 0.65rem;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-color);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem 2.25rem;
+            animation: page-in 0.35s ease both;
+        }
+
+        @keyframes page-in {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        /* ============ Cards & Containers ============ */
+        .stat-card {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.04), transparent 38%), var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(129, 140, 248, 0.28);
+            box-shadow: var(--shadow-pop);
+        }
+
+        .stat-card .stat-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-color);
+            line-height: 1.15;
+        }
+
+        .stat-card .stat-label {
+            color: var(--muted-text);
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .table-container {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.03), transparent 30%), var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .filter-bar {
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* ============ Tables ============ */
+        .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: var(--text-color);
+            --bs-table-border-color: var(--border-subtle);
+            --bs-table-striped-bg: rgba(148, 163, 184, 0.04);
+            --bs-table-hover-bg: rgba(129, 140, 248, 0.05);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--muted-text);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 0.9rem 0.75rem;
+        }
+
+        /* ============ Badges ============ */
+        .badge {
+            font-weight: 600;
+            font-size: 0.72rem;
+            letter-spacing: 0.01em;
+            padding: 0.4em 0.7em;
+            border-radius: 99px;
+        }
+
+        /* Soft tinted badges (modern pill style) */
+        .badge.bg-primary { background: rgba(129, 140, 248, 0.16) !important; color: #a5b4fc !important; }
+        .badge.bg-secondary { background: rgba(148, 163, 184, 0.14) !important; color: #b6bfd1 !important; }
+        .badge.bg-success { background: rgba(52, 211, 153, 0.14) !important; color: #6ee7b7 !important; }
+        .badge.bg-warning { background: rgba(251, 191, 36, 0.14) !important; color: #fcd34d !important; }
+        .badge.bg-danger { background: rgba(248, 113, 113, 0.14) !important; color: #fca5a5 !important; }
+        .badge.bg-info { background: rgba(56, 189, 248, 0.14) !important; color: #7dd3fc !important; }
+        .badge.bg-light { background: rgba(148, 163, 184, 0.12) !important; color: var(--text-color) !important; }
+        .badge.bg-dark { background: rgba(148, 163, 184, 0.1) !important; color: var(--muted-text) !important; }
+        .badge.bg-purple { background: rgba(167, 139, 250, 0.16) !important; color: #c4b5fd !important; }
+
+        .bg-purple { background-color: #8b5cf6 !important; }
+
+        /* ============ Buttons ============ */
+        .btn { border-radius: 0.6rem; font-weight: 500; transition: all 0.15s ease; }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            border: none;
+            box-shadow: 0 2px 10px -2px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background: linear-gradient(135deg, #5558e8 0%, #7c4ff0 100%);
+            box-shadow: 0 4px 16px -2px rgba(99, 102, 241, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active { transform: none; }
+
+        .btn-outline-primary { border-color: rgba(129, 140, 248, 0.4); color: #a5b4fc; }
+        .btn-outline-primary:hover { background: rgba(129, 140, 248, 0.12); border-color: #818cf8; color: #c7d2fe; }
+
+        .btn-outline-secondary { border-color: var(--border-color); color: var(--muted-text); }
+        .btn-outline-secondary:hover { background: var(--surface-hover); border-color: #3b4258; color: var(--text-color); }
+
+        .btn-action { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+
+        /* ============ Forms ============ */
+        .form-control, .form-select, textarea, input.search-input {
+            background-color: var(--surface-muted) !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            border-radius: 0.6rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: rgba(129, 140, 248, 0.55) !important;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.14) !important;
+        }
+
+        .form-control::placeholder { color: #5b6478; }
+
+        .search-input {
+            border-radius: 0.6rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .form-check-input { background-color: var(--surface-muted); border-color: #3b4258; }
+        .form-check-input:checked { background-color: var(--secondary-color); border-color: var(--secondary-color); }
+
+        /* ============ Page Header ============ */
+        .page-header { margin-bottom: 1.75rem; }
+
+        .page-header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .page-header .subtitle {
+            color: var(--muted-text);
+            font-size: 0.92rem;
+            margin-top: 0.3rem;
+            margin-bottom: 0;
+        }
+
+        /* ============ Misc components ============ */
+        .alert { border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+
+        .modal-content {
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-pop);
+        }
+
+        .dropdown-menu {
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-pop);
+            padding: 0.4rem;
+        }
+
+        .dropdown-item { border-radius: 0.45rem; padding: 0.45rem 0.75rem; font-size: 0.9rem; }
+        .dropdown-item:hover { background: var(--surface-hover); }
+
+        .pagination .page-link {
+            background: var(--surface-color);
+            border-color: var(--border-color);
+            color: var(--muted-text);
+            border-radius: 0.5rem;
+            margin: 0 2px;
+        }
+        .pagination .page-item.active .page-link {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        .list-group-item-action:hover { background-color: var(--surface-hover) !important; }
+
+        /* Dark theme fixes for light-mode leftovers */
+        [data-bs-theme=dark] .bg-light { background-color: var(--surface-muted) !important; }
+        [data-bs-theme=dark] .text-dark { color: var(--text-color) !important; }
+        [data-bs-theme=dark] .bg-white { background-color: var(--surface-color) !important; }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: none; box-shadow: var(--shadow-pop); }
+            .sidebar-toggle { display: flex; }
+            .sidebar-backdrop.show { display: block; }
+            .main-content { margin-left: 0; padding: 4.5rem 1rem 1.5rem; }
+        }
+
+        /* Spinning animation for scanning indicator */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin 2s linear infinite;
+            display: inline-block;
+        }
+
+        .text-muted {
+            color: var(--muted-text) !important;
+        }
+
+        .card,
+        .modal-content,
+        .dropdown-menu,
+        .list-group-item,
+        .leads-panel,
+        .composer-panel,
+        .panel-header,
+        .lead-item,
+        .composer-actions,
+        .email-to,
+        .analysis-panel,
+        .queue-display,
+        .batch-actions-bar {
+            background-color: var(--surface-color) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        .lead-item:hover,
+        .lead-item.active,
+        .lead-item.selected {
+            background-color: var(--surface-muted) !important;
+        }
+
+        .lead-name,
+        .lead-name a,
+        .stats-bar strong {
+            color: var(--text-color) !important;
+        }
+
+        .lead-meta,
+        .stats-bar {
+            color: var(--muted-text) !important;
+        }
+    </style>
+    
+    
+</head>
+<body>
+<script>
+/* Static demo shim: serve captured API JSON, disable mutating actions. */
+(function () {
+  var realFetch = window.fetch.bind(window);
+  function apiFile(path) {
+    var clean = path.split('?')[0].replace(/^\/api\//, '').replace(/\/$/, '');
+    return 'api/' + clean.replace(/\//g, '_') + '.json';
+  }
+  window.fetch = function (input, init) {
+    var url = (typeof input === 'string') ? input : (input && input.url) || '';
+    var method = ((init && init.method) || (input && input.method) || 'GET').toUpperCase();
+    if (/^https?:/.test(url) && url.indexOf(location.origin) !== 0) {
+      return realFetch(input, init); // external CDN/API calls pass through
+    }
+    if (url.indexOf('/api/') === 0 || url.indexOf('api/') === 0) {
+      if (method === 'GET') {
+        return realFetch(apiFile(url.replace(/^(?!\/)/, '/'))).then(function (r) {
+          if (r.ok) return r;
+          return new Response('{"success": true, "items": [], "leads": [], "drafts": []}',
+            { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }).catch(function () {
+          return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+        });
+      }
+      demoNotice();
+      return Promise.resolve(new Response('{"success": false, "error": "Static demo - actions are disabled"}',
+        { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    }
+    return realFetch(input, init);
+  };
+  function demoNotice() {
+    var n = document.getElementById('demo-notice-toast');
+    if (!n) {
+      n = document.createElement('div');
+      n.id = 'demo-notice-toast';
+      n.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:10px 18px;border-radius:8px;z-index:99999;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.35);transition:opacity .3s;';
+      n.textContent = 'This is a static demo \u2014 interactive actions are disabled.';
+      document.body.appendChild(n);
+    }
+    n.style.opacity = '1';
+    clearTimeout(n._t);
+    n._t = setTimeout(function () { n.style.opacity = '0'; }, 2500);
+  }
+  document.addEventListener('submit', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    demoNotice();
+  }, true);
+  document.addEventListener('DOMContentLoaded', function () {
+    var bar = document.createElement('div');
+    bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99998;background:#111827;color:#e5e7eb;padding:9px 16px;font:13px/1.4 Inter,system-ui,sans-serif;text-align:center;border-top:1px solid #374151;';
+    bar.innerHTML = '\u26A1 <strong>Static demo</strong> of the Business Radar dashboard with sample data \u2014 buttons and forms are disabled. ' +
+      '&nbsp;<a href="https://github.com/ketans7/business-radar" target="_blank" rel="noopener" style="color:#60a5fa;">View source code</a>' +
+      '&nbsp;\u00B7&nbsp; <a href="../index.html" style="color:#60a5fa;">\u2190 Back to resume</a>';
+    document.body.appendChild(bar);
+    document.body.style.paddingBottom = '52px';
+  });
+})();
+</script>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">
+        <i class="bi bi-list"></i>
+    </button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <span class="logo-mark"><i class="bi bi-radar"></i></span>
+            <span>Business Radar</span>
+        </div>
+
+        <div class="nav-section-label">Overview</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="index.html">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="stats.html">
+                    <i class="bi bi-graph-up"></i> Analytics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="map.html">
+                    <i class="bi bi-geo-alt-fill"></i> Map
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">Outreach</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="leads.html">
+                    <i class="bi bi-building"></i> Leads
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="email-manager.html">
+                    <i class="bi bi-envelope-paper-fill"></i> AI Email Manager
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="followups.html">
+                    <i class="bi bi-arrow-repeat"></i> Follow-ups
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="replies.html">
+                    <i class="bi bi-inbox"></i> Replies
+                    <span class="badge bg-primary rounded-pill ms-auto" id="navReplyBadge" style="display:none;font-size:0.65rem;"></span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">System</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="settings.html">
+                    <i class="bi bi-gear"></i> Settings
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <span class="status-dot"></span> System Active
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        
+            
+        
+        
+        
+<style>
+    .replies-layout { display: flex; gap: 1rem; height: calc(100vh - 140px); }
+    .lead-list-panel { width: 340px; min-width: 280px; overflow-y: auto; border-right: 1px solid var(--border-color); padding-right: 1rem; }
+    .thread-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .lead-item { padding: 0.75rem; border-radius: 0.5rem; cursor: pointer; border: 1px solid transparent; margin-bottom: 0.5rem; transition: all 0.15s; }
+    .lead-item:hover { background: var(--surface-muted); border-color: var(--border-color); }
+    .lead-item.active { background: var(--surface-muted); border-color: var(--primary-color); }
+    .lead-item .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary-color); display: inline-block; }
+    .thread-messages { flex: 1; overflow-y: auto; padding: 1rem 0; }
+    .msg-bubble { max-width: 80%; padding: 0.75rem 1rem; border-radius: 0.75rem; margin-bottom: 0.75rem; word-wrap: break-word; white-space: pre-wrap; font-size: 0.9rem; }
+    .msg-sent { background: #1e3a5f; margin-left: auto; border-bottom-right-radius: 0.2rem; }
+    .msg-received { background: var(--surface-muted); margin-right: auto; border-bottom-left-radius: 0.2rem; }
+    .msg-meta { font-size: 0.75rem; color: var(--muted-text); margin-bottom: 0.25rem; }
+    .compose-area { border-top: 1px solid var(--border-color); padding-top: 1rem; }
+    .compose-area textarea { background: var(--surface-color); border-color: var(--border-color); color: var(--text-color); min-height: 120px; }
+    .compose-area textarea:focus { border-color: var(--primary-color); box-shadow: 0 0 0 0.2rem rgba(129,140,248,0.15); }
+    .empty-state { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--muted-text); }
+    .classification-badge { font-size: 0.7rem; }
+    .reply-preview { font-size: 0.8rem; color: var(--muted-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 260px; }
+    .thread-header { border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 0.5rem; }
+</style>
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1><i class="bi bi-inbox"></i> Replies</h1>
+        <p class="subtitle">Email conversations with leads</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-primary" onclick="checkNow()" id="btnCheckNow">
+            <i class="bi bi-arrow-clockwise"></i> Check Now
+        </button>
+        <span class="badge bg-primary fs-6" id="unreadBadge">
+            <i class="bi bi-envelope"></i> <span id="unreadCount">0</span> unread
+        </span>
+    </div>
+</div>
+
+<div class="replies-layout">
+    <!-- Left panel: leads with replies -->
+    <div class="lead-list-panel" id="leadListPanel">
+        <input type="text" class="form-control form-control-sm mb-3" placeholder="Search leads..." id="leadSearch" oninput="filterLeads()">
+        <div id="leadList">
+            <div class="text-center text-muted py-4">
+                <div class="spinner-border spinner-border-sm"></div> Loading...
+            </div>
+        </div>
+    </div>
+
+    <!-- Right panel: thread + compose -->
+    <div class="thread-panel" id="threadPanel">
+        <div class="empty-state" id="emptyState">
+            <div class="text-center">
+                <i class="bi bi-chat-dots fs-1 d-block mb-3"></i>
+                <h5>Select a lead to view conversation</h5>
+                <p>Or click "Check Now" to scan for new replies</p>
+            </div>
+        </div>
+
+        <div id="threadContent" style="display:none; flex-direction:column; height:100%;">
+            <!-- Thread header -->
+            <div class="thread-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0" id="threadBusinessName"></h5>
+                        <small class="text-muted" id="threadEmail"></small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <span class="badge" id="threadStatus">Status</span>
+                        <a href="#" id="threadLeadLink" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-box-arrow-up-right"></i> View Lead
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="thread-messages" id="threadMessages"></div>
+
+            <!-- Compose area -->
+            <div class="compose-area">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex gap-2 align-items-center">
+                        <label class="form-label mb-0 fw-semibold">Compose Reply</label>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-primary active" id="btnManual" onclick="setComposeMode('manual')">
+                                <i class="bi bi-pencil"></i> Manual
+                            </button>
+                            <button class="btn btn-outline-primary" id="btnAI" onclick="setComposeMode('ai')">
+                                <i class="bi bi-robot"></i> AI Draft
+                            </button>
+                        </div>
+                    </div>
+                    <div id="aiControls" style="display:none;" class="d-flex gap-2 align-items-center">
+                        <select class="form-select form-select-sm" id="toneSelect" style="width:auto;">
+                            <option value="professional">Professional</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="assertive">Assertive</option>
+                        </select>
+                        <button class="btn btn-sm btn-primary" onclick="generateAIReply()" id="btnGenerate">
+                            <i class="bi bi-magic"></i> Generate
+                        </button>
+                    </div>
+                </div>
+                <input type="text" class="form-control form-control-sm mb-2" id="replySubject" placeholder="Subject">
+                <textarea class="form-control mb-2" id="replyBody" placeholder="Type your reply..."></textarea>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted" id="composeStatus"></small>
+                    <button class="btn btn-success" onclick="sendReply()" id="btnSend" disabled>
+                        <i class="bi bi-send"></i> Send Reply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let allLeads = [];
+let activeLeadId = null;
+let composeMode = 'manual';
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', () => {
+    loadLeads();
+    loadUnreadCount();
+    // Poll unread count every 60s
+    setInterval(loadUnreadCount, 60000);
+});
+
+// ── Load leads with replies ──
+async function loadLeads() {
+    try {
+        const res = await fetch('/api/replies/leads-with-replies');
+        const data = await res.json();
+        if (data.success) {
+            allLeads = data.leads;
+            renderLeadList(allLeads);
+        }
+    } catch(e) {
+        console.error('Failed to load leads:', e);
+    }
+}
+
+function renderLeadList(leads) {
+    const container = document.getElementById('leadList');
+    if (!leads.length) {
+        container.innerHTML = `
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                <p>No replies yet</p>
+                <button class="btn btn-sm btn-outline-primary" onclick="checkNow()">Check Inbox</button>
+            </div>`;
+        return;
+    }
+    container.innerHTML = leads.map(l => `
+        <div class="lead-item ${l.lead_id == activeLeadId ? 'active' : ''}" onclick="selectLead(${l.lead_id})" data-name="${(l.business_name||'').toLowerCase()}">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="fw-semibold">${escHtml(l.business_name)}</div>
+                ${l.unread_count > 0 ? `<span class="badge bg-primary rounded-pill">${l.unread_count}</span>` : ''}
+            </div>
+            <div class="reply-preview">${escHtml(l.latest_body_preview || 'No preview')}</div>
+            <div class="d-flex justify-content-between mt-1">
+                <span class="badge classification-badge bg-${classColor(l.latest_classification)}">${l.latest_classification || 'general'}</span>
+                <small class="text-muted">${formatTimeAgo(l.latest_received_at)}</small>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterLeads() {
+    const q = document.getElementById('leadSearch').value.toLowerCase();
+    const filtered = allLeads.filter(l => (l.business_name || '').toLowerCase().includes(q));
+    renderLeadList(filtered);
+}
+
+// ── Select a lead → load thread ──
+async function selectLead(leadId) {
+    activeLeadId = leadId;
+    // Update active state in list
+    document.querySelectorAll('.lead-item').forEach(el => el.classList.remove('active'));
+    document.querySelector(`.lead-item[onclick="selectLead(${leadId})"]`)?.classList.add('active');
+
+    document.getElementById('emptyState').style.display = 'none';
+    const tc = document.getElementById('threadContent');
+    tc.style.display = 'flex';
+
+    try {
+        const res = await fetch(`/api/replies/thread/${leadId}`);
+        const data = await res.json();
+        if (!data.success) return;
+
+        const lead = data.lead;
+        document.getElementById('threadBusinessName').textContent = lead.business_name;
+        document.getElementById('threadEmail').textContent = lead.email;
+        document.getElementById('threadStatus').textContent = lead.status;
+        document.getElementById('threadStatus').className = `badge bg-${statusColor(lead.status)}`;
+        document.getElementById('threadLeadLink').href = `/lead/${leadId}`;
+
+        // Set reply subject from last message
+        const lastMsg = data.thread[data.thread.length - 1];
+        if (lastMsg) {
+            let subj = lastMsg.subject || '';
+            if (subj && !subj.toLowerCase().startsWith('re:')) subj = 'Re: ' + subj;
+            document.getElementById('replySubject').value = subj;
+        }
+
+        renderThread(data.thread);
+        // Mark all received messages as read
+        markThreadRead(data.thread);
+    } catch(e) {
+        console.error('Failed to load thread:', e);
+    }
+}
+
+function renderThread(thread) {
+    const container = document.getElementById('threadMessages');
+    if (!thread.length) {
+        container.innerHTML = '<div class="text-center text-muted py-4">No messages in thread</div>';
+        return;
+    }
+    container.innerHTML = thread.map(m => {
+        const isSent = m.direction === 'sent';
+        return `
+            <div class="d-flex flex-column ${isSent ? 'align-items-end' : 'align-items-start'}">
+                <div class="msg-meta">
+                    ${isSent ? '<i class="bi bi-arrow-up-right"></i> You' : '<i class="bi bi-arrow-down-left"></i> ' + escHtml(m.from_email || 'Lead')}
+                    &middot; ${formatDateTime(m.timestamp)}
+                    ${m.subject ? ' &middot; <em>' + escHtml(m.subject) + '</em>' : ''}
+                </div>
+                <div class="msg-bubble ${isSent ? 'msg-sent' : 'msg-received'}">${escHtml(m.body || '(no body)')}</div>
+            </div>`;
+    }).join('');
+    // Scroll to bottom
+    container.scrollTop = container.scrollHeight;
+}
+
+async function markThreadRead(thread) {
+    for (const m of thread) {
+        if (m.direction === 'received' && m.reply_id && !m.is_read) {
+            try { await fetch(`/api/replies/mark-read/${m.reply_id}`, {method:'POST'}); } catch(e) {}
+        }
+    }
+    // Refresh counts
+    loadUnreadCount();
+    loadLeads();
+}
+
+// ── Compose modes ──
+function setComposeMode(mode) {
+    composeMode = mode;
+    document.getElementById('btnManual').classList.toggle('active', mode === 'manual');
+    document.getElementById('btnAI').classList.toggle('active', mode === 'ai');
+    document.getElementById('aiControls').style.display = mode === 'ai' ? 'flex' : 'none';
+    updateSendBtn();
+}
+
+function updateSendBtn() {
+    const body = document.getElementById('replyBody').value.trim();
+    document.getElementById('btnSend').disabled = !body || !activeLeadId;
+}
+
+document.addEventListener('input', (e) => {
+    if (e.target.id === 'replyBody') updateSendBtn();
+});
+
+// ── AI reply generation ──
+async function generateAIReply() {
+    if (!activeLeadId) return;
+    const btn = document.getElementById('btnGenerate');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Generating...';
+    document.getElementById('composeStatus').textContent = 'AI is drafting a reply...';
+
+    try {
+        const tone = document.getElementById('toneSelect').value;
+        const res = await fetch('/api/replies/generate-reply', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({lead_id: activeLeadId, tone})
+        });
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('replySubject').value = data.subject;
+            document.getElementById('replyBody').value = data.body;
+            document.getElementById('composeStatus').textContent = 'AI draft ready — review and edit before sending';
+            updateSendBtn();
+        } else {
+            document.getElementById('composeStatus').textContent = 'AI generation failed: ' + (data.error || 'Unknown error');
+        }
+    } catch(e) {
+        document.getElementById('composeStatus').textContent = 'Network error: ' + e.message;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-magic"></i> Generate';
+    }
+}
+
+// ── Send reply ──
+async function sendReply() {
+    if (!activeLeadId) return;
+    const subject = document.getElementById('replySubject').value.trim();
+    const body = document.getElementById('replyBody').value.trim();
+    if (!body) return;
+
+    const btn = document.getElementById('btnSend');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Sending...';
+
+    try {
+        const res = await fetch('/api/replies/send', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({lead_id: activeLeadId, subject, body})
+        });
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('composeStatus').textContent = 'Reply sent successfully!';
+            document.getElementById('replyBody').value = '';
+            // Reload thread to show sent message
+            selectLead(activeLeadId);
+        } else {
+            document.getElementById('composeStatus').textContent = 'Send failed: ' + (data.error || 'Unknown error');
+        }
+    } catch(e) {
+        document.getElementById('composeStatus').textContent = 'Network error: ' + e.message;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-send"></i> Send Reply';
+        updateSendBtn();
+    }
+}
+
+// ── Check Now ──
+async function checkNow() {
+    const btn = document.getElementById('btnCheckNow');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Checking...';
+
+    try {
+        const res = await fetch('/api/replies/check-now', {method: 'POST'});
+        const data = await res.json();
+        if (data.success) {
+            const s = data.stats;
+            const msg = `Scanned ${s.total_checked} emails — ${s.new_replies} new replies found`;
+            document.getElementById('composeStatus').textContent = msg;
+            if (s.new_replies > 0) {
+                loadLeads();
+                loadUnreadCount();
+            }
+        }
+    } catch(e) {
+        document.getElementById('composeStatus').textContent = 'Check failed: ' + e.message;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Check Now';
+    }
+}
+
+// ── Unread count ──
+async function loadUnreadCount() {
+    try {
+        const res = await fetch('/api/replies/unread-count');
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('unreadCount').textContent = data.count;
+            // Also update nav badge if it exists
+            const navBadge = document.getElementById('navReplyBadge');
+            if (navBadge) {
+                navBadge.textContent = data.count;
+                navBadge.style.display = data.count > 0 ? 'inline-block' : 'none';
+            }
+        }
+    } catch(e) {}
+}
+
+// ── Helpers ──
+function escHtml(s) {
+    if (!s) return '';
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function classColor(c) {
+    const map = {meeting:'success', interested:'info', unsubscribe:'danger', general:'secondary'};
+    return map[c] || 'secondary';
+}
+
+function statusColor(s) {
+    const map = {new:'primary', contacted:'info', replied:'success', meeting:'success', booked:'warning', unsubscribed:'danger'};
+    return map[s] || 'secondary';
+}
+
+function formatTimeAgo(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const diff = (Date.now() - d.getTime()) / 1000;
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+    return Math.floor(diff/86400) + 'd ago';
+}
+
+function formatDateTime(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-GB', {day:'numeric', month:'short'}) + ' ' + d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+}
+</script>
+
+    </main>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    // Global unread reply badge updater
+    (function(){
+        async function updateNavReplyBadge(){
+            try {
+                const res = await fetch('/api/replies/unread-count');
+                const data = await res.json();
+                const badge = document.getElementById('navReplyBadge');
+                if(badge && data.success){
+                    badge.textContent = data.count;
+                    badge.style.display = data.count > 0 ? 'inline-block' : 'none';
+                }
+            } catch(e){}
+        }
+        updateNavReplyBadge();
+        setInterval(updateNavReplyBadge, 60000);
+    })();
+
+    // Mobile sidebar toggle
+    (function(){
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('sidebarToggle');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        function close(){ sidebar.classList.remove('open'); backdrop.classList.remove('show'); }
+        toggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            backdrop.classList.toggle('show', sidebar.classList.contains('open'));
+        });
+        backdrop.addEventListener('click', close);
+        sidebar.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', close));
+    })();
+    </script>
+    
+    
+</body>
+</html>

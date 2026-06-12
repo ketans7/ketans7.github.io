@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo *)",
+      "Bash(curl -s https://api.github.com/repos/ketans7/business-radar)",
+      "Read(//Users/ketan/Documents/GitHub/**)",
+      "Read(//private/tmp/**)",
+      "Bash(rm -rf business-radar)",
+      "Bash(python3 -m venv .venv)",
+      "Bash(.venv/bin/pip install *)",
+      "Bash(.venv/bin/python -c \"import sys; sys.path.insert\\(0,'.'\\); from dashboard.app import create_app; print\\('app imports OK'\\)\")",
+      "Bash(grep -n \"class Lead\\\\|CREATE TABLE\\\\|def add_lead\\\\|def get_stats\\\\|class Database\" /tmp/business-radar/core/database.py && sed -n '/@dataclass/,/^class Database/p' /tmp/business-radar/core/database.py | head -80)",
+      "Bash(.venv/bin/python seed_demo.py)",
+      "Bash(rm -f data/business.db)",
+      "Bash(.venv/bin/python scripts/recreate_db.py)",
+      "Bash(.venv/bin/python -c ' *)",
+      "Bash(RADAR_DRY_RUN=1 RADAR_SENDER_NAME=\"Ketan Sharma\" .venv/bin/python scripts/start_dashboard.py)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5001/)",
+      "Bash(git -C /Users/ketan/Documents/GitHub/ketans7.github.io log -3 --format=\"%an <%ae>\")",
+      "Read(//tmp/**)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1440,1000 --screenshot=\"/tmp/shot_lead2.png\" --virtual-time-budget=5000 \"http://localhost:8901/demo/business-radar/lead_2.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,3400 --screenshot=\"/tmp/shot_resume_full.png\" --virtual-time-budget=5000 \"http://localhost:8901/\")",
+      "Bash(pkill -f \"start_dashboard.py\")",
+      "Bash(pkill -f \"http.server 8901\")",
+      "Bash(git -C /Users/ketan/Documents/GitHub/ketans7.github.io status --short)"
+    ],
+    "additionalDirectories": [
+      "/private/tmp/business-radar/core",
+      "/tmp/business-radar",
+      "/private/tmp/business-radar"
+    ]
+  }
+}
