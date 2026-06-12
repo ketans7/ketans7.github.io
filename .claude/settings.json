@@ -45,7 +45,8 @@
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,2400 --screenshot=\"/tmp/shot_resume3.png\" --virtual-time-budget=5000 \"http://localhost:8901/\")",
       "Bash(python3 -m http.server 8901 > /tmp/static-server.log 2>&1 & *)",
       "Bash(curl -s -o /dev/null -w \"ketans7.github.io -> %{http_code}\\\\n\" https://ketans7.github.io/)",
-      "Bash(curl -s -o /dev/null -w \"ketan7.github.io -> %{http_code}\\\\n\" https://ketan7.github.io/)"
+      "Bash(curl -s -o /dev/null -w \"ketan7.github.io -> %{http_code}\\\\n\" https://ketan7.github.io/)",
+      "Bash(gh api *)"
     ],
     "additionalDirectories": [
       "/private/tmp/business-radar/core",
